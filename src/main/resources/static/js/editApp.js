@@ -62,7 +62,9 @@
 			if (questionId != 0) {
 				url = url + "/" + questionId;
 			}
-
+			if(hasAdditionalAnswer == undefined || hasAdditionalAnswer == ''){
+				hasAdditionalAnswer = 0;
+			}
 			$http.post(url + "?text=" + questionText + "&hasAdditionalAnswer=" + hasAdditionalAnswer + "&quiz_id=" + $scope.quizId)
 			.then(
 					function(response) {
