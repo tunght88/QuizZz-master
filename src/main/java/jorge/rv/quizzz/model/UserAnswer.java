@@ -20,18 +20,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "USER_ANSWER")
 public class UserAnswer extends BaseModel implements UserOwned {
 
-	@Size(min = 2, max =1000, message = "The question should be between 2 and 1000 characters")
-	@NotNull(message = "Question text not provided")
-	private String text;
 
 	@ManyToOne
 	@JsonIgnore
 	private Quiz quiz;
 
 
-	//@JsonIgnore
-	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Answer> answers;
 
 	@JsonIgnore
 	@OneToOne
@@ -50,13 +44,36 @@ public class UserAnswer extends BaseModel implements UserOwned {
 		return createdDate;
 	}
 
-	public List<Answer> getAnswers() {
-		return answers;
+
+	public Question getQuestion() {
+		return question;
 	}
 
-	public void setAnswers(List<Answer> answers) {
-		this.answers = answers;
+
+	public void setQuestion(Question question) {
+		this.question = question;
 	}
+
+
+	public Answer getAnswer() {
+		return answer;
+	}
+
+
+	public void setAnswer(Answer answer) {
+		this.answer = answer;
+	}
+
+
+	public String getAdditionalAnswer() {
+		return additionalAnswer;
+	}
+
+
+	public void setAdditionalAnswer(String additionalAnswer) {
+		this.additionalAnswer = additionalAnswer;
+	}
+
 
 	public Quiz getQuiz() {
 		return quiz;
@@ -66,13 +83,6 @@ public class UserAnswer extends BaseModel implements UserOwned {
 		this.quiz = quiz;
 	}
 
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
 
 	@Override
 	@JsonIgnore

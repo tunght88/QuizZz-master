@@ -18,7 +18,7 @@ import jorge.rv.quizzz.model.UserAnswer;
 import jorge.rv.quizzz.repository.QuestionRepository;
 import jorge.rv.quizzz.repository.UserAnswerRepository;
 
-@Service("QuestionService")
+@Service("UserAnswerService")
 @Transactional
 public class UserAnswerServiceImpl implements UserAnswerService {
 
@@ -37,7 +37,6 @@ public class UserAnswerServiceImpl implements UserAnswerService {
 
 	@Override
 	public UserAnswer save(UserAnswer userAnswer) throws UnauthorizedActionException {
-		int count = questionRepository.countByQuiz(userAnswer.getQuiz());
 
 		return userAnswerRepository.save(userAnswer);
 	}

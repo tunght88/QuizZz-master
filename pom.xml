@@ -6,7 +6,7 @@
 	<groupId>jorge.rv</groupId>
 	<artifactId>QuizZz</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>QuizZz</name>
 	<description>Quiz web app using Spring Boot</description>

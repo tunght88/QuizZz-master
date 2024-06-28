@@ -26,7 +26,7 @@
 			       		<label th:text="#{label.playQuiz.addionalAnswer}" >username</label><br/>
 						<input th:placeholder="#{label.playquiz.additionalAnswer.placeholder}" class="form-control"  aria-describedby="draggable-addon" ng-model="addionalAnswer"/>
 					</div>
-					<button th:text="#{label.playquiz.submit.question}" class="btn btn-lg btn-primary btn-block" type="submit" ng-click="answerQuestion(answerChoices)"></button>
+					<button th:text="#{label.playquiz.submit.question}" class="btn btn-lg btn-primary btn-block" type="submit" ng-click="answerQuestion(answerChoices,addionalAnswer)"></button>
 		        </div>
 			</div>
 			

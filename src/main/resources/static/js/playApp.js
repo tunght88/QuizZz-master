@@ -47,7 +47,7 @@
 				);
 		}
 		
-		$scope.answerQuestion = function(selection) {
+		$scope.answerQuestion = function(selection,textAnswer) {
 			if (selection === undefined) {
 				alert("Please, choose an answer");
 				return;
@@ -55,7 +55,8 @@
 						
 			answers.push({
 				question: $scope.currentQuestion.id,
-				selectedAnswer: selection
+				selectedAnswer: selection,
+				additionalAnswer:textAnswer
 			});
 			
 			$scope.questionCount++;

@@ -22,13 +22,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import jorge.rv.quizzz.controller.utils.RestVerifier;
+import jorge.rv.quizzz.model.Answer;
 import jorge.rv.quizzz.model.AuthenticatedUser;
 import jorge.rv.quizzz.model.Question;
 import jorge.rv.quizzz.model.Quiz;
+import jorge.rv.quizzz.model.UserAnswer;
 import jorge.rv.quizzz.model.support.Response;
 import jorge.rv.quizzz.model.support.Result;
+import jorge.rv.quizzz.service.AnswerService;
 import jorge.rv.quizzz.service.QuestionService;
 import jorge.rv.quizzz.service.QuizService;
+import jorge.rv.quizzz.service.UserAnswerService;
 
 @RestController
 @RequestMapping(QuizController.ROOT_MAPPING)
@@ -43,6 +47,10 @@ public class QuizController {
 
 	@Autowired
 	private QuestionService questionService;
+	@Autowired
+	private AnswerService answerService;
+	@Autowired
+	private UserAnswerService userAnswerService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	@PreAuthorize("permitAll")
@@ -134,6 +142,16 @@ public class QuizController {
 	@ResponseStatus(HttpStatus.OK)
 	public Result playQuiz(@PathVariable long quiz_id, @RequestBody List<Response> answersBundle) {
 		Quiz quiz = quizService.find(quiz_id);
+		for (Response response : answersBundle) {
+			UserAnswer userAnswer = new UserAnswer();
+			Question question = questionService.find(response.getQuestion());
+			Answer answer = answerService.find(response.getSelectedAnswer());
+			userAnswer.setQuiz(quiz);
+			userAnswer.setQuestion(question);
+			userAnswer.setAnswer(answer);
+			userAnswer.setAdditionalAnswer(response.getAdditionalAnswer());
+			userAnswerService.save(userAnswer);
+		}
 		return quizService.checkAnswers(quiz, answersBundle);
 	}
 
