@@ -1,32 +1,21 @@
 package jorge.rv.quizzz.model.support;
 
 public class Response {
-	private Long question;
-	private Long selectedAnswer;
-	private String additionalAnswer;
-
-	public Long getQuestion() {
-		return question;
+	private String key;
+	private String value;
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
+	}
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public void setQuestion(Long question) {
-		this.question = question;
-	}
 
-	public Long getSelectedAnswer() {
-		return selectedAnswer;
-	}
-
-	public void setSelectedAnswer(Long selectedAnswer) {
-		this.selectedAnswer = selectedAnswer;
-	}
-
-	public String getAdditionalAnswer() {
-		return additionalAnswer;
-	}
-
-	public void setAdditionalAnswer(String additionalAnswer) {
-		this.additionalAnswer = additionalAnswer;
-	}
 
 }

@@ -17,9 +17,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jorge.rv.quizzz.controller.utils.RestVerifier;
 import jorge.rv.quizzz.exceptions.ModelVerificationException;
+import jorge.rv.quizzz.model.Assessment;
 import jorge.rv.quizzz.model.AuthenticatedUser;
 import jorge.rv.quizzz.model.Question;
 import jorge.rv.quizzz.model.Quiz;
+import jorge.rv.quizzz.service.AssessmentService;
 import jorge.rv.quizzz.service.QuestionService;
 import jorge.rv.quizzz.service.QuizService;
 import jorge.rv.quizzz.service.accesscontrol.AccessControlService;
@@ -32,6 +34,8 @@ public class WebQuizController {
 
 	@Autowired
 	QuestionService questionService;
+	@Autowired
+	AssessmentService assessmentService;
 
 	@Autowired
 	AccessControlService<Quiz> accessControlServiceQuiz;
@@ -95,13 +99,14 @@ public class WebQuizController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/quiz/{quiz_id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/assessment/{assessment_id}", method = RequestMethod.GET)
 	@PreAuthorize("permitAll")
-	public ModelAndView getQuiz(@PathVariable long quiz_id) {
-		Quiz quiz = quizService.find(quiz_id);
+	public ModelAndView getQuiz(@PathVariable long assessment_id,@AuthenticationPrincipal AuthenticatedUser user) {
+		Assessment assessment = assessmentService.find(assessment_id);
 
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("quiz", quiz);
+		mav.addObject("assessment", assessment);
+		mav.addObject("user", user.getUser());
 		mav.setViewName("quizView");
 
 		return mav;

@@ -13,6 +13,19 @@ public abstract class BaseModel {
 	@Column(name = "id")
 	private Long id;
 
+	@Column(name = "active")
+	private Boolean active;
+	
+
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -1,29 +1,15 @@
 package jorge.rv.quizzz.model.support;
 
 public class Result {
-	private int totalQuestions = 0;
-	private int correctQuestions = 0;
+	private int status = 0;
 
-	public int getTotalQuestions() {
-		return totalQuestions;
+	public int getStatus() {
+		return status;
 	}
 
-	public void setTotalQuestions(int totalQuestions) {
-		this.totalQuestions = totalQuestions;
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
-	public int getCorrectQuestions() {
-		return correctQuestions;
-	}
 
-	public void setCorrectQuestions(int correctQuestions) {
-		this.correctQuestions = correctQuestions;
-	}
-
-	public void addAnswer(Boolean isCorrect) {
-		totalQuestions++;
-		if (isCorrect) {
-			correctQuestions++;
-		}
-	}
 }

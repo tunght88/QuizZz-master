@@ -77,14 +77,6 @@ public class QuestionServiceImpl implements QuestionService {
 			currentQuestion.setOrder(newQuestion.getOrder());
 	}
 
-	@Override
-	public Boolean checkIsCorrectAnswer(Question question, Long answer_id) {
-		if (!question.getIsValid() || question.getCorrectAnswer() == null) {
-			return false;
-		}
-
-		return question.getCorrectAnswer().getId().equals(answer_id);
-	}
 
 	@Override
 	public List<Question> findQuestionsByQuiz(Quiz quiz) {
@@ -96,11 +88,6 @@ public class QuestionServiceImpl implements QuestionService {
 		return questionRepository.findByQuizAndIsValidTrueOrderByOrderAsc(quiz);
 	}
 
-	@Override
-	public void setCorrectAnswer(Question question, Answer answer) {
-		question.setCorrectAnswer(answer);
-		save(question);
-	}
 
 	@Override
 	public Answer addAnswerToQuestion(Answer answer, Question question) {
@@ -114,7 +101,6 @@ public class QuestionServiceImpl implements QuestionService {
 
 	private void checkQuestionInitialization(Question question, int count, Answer newAnswer) {
 		checkAndUpdateQuestionValidity(question, true);
-		setCorrectAnswerIfFirst(question, count, newAnswer);
 	}
 
 	private Answer updateAndSaveAnswer(Answer answer, Question question, int count) {
@@ -130,12 +116,6 @@ public class QuestionServiceImpl implements QuestionService {
 		}
 	}
 
-	private void setCorrectAnswerIfFirst(Question question, int count, Answer newAnswer) {
-		if (count == 0) {
-			question.setCorrectAnswer(newAnswer);
-			questionRepository.save(question);
-		}
-	}
 
 	@Override
 	public int countQuestionsInQuiz(Quiz quiz) {
@@ -147,9 +127,5 @@ public class QuestionServiceImpl implements QuestionService {
 		return questionRepository.countByQuizAndIsValidTrue(quiz);
 	}
 
-	@Override
-	public Answer getCorrectAnswer(Question question) {
-		return question.getCorrectAnswer();
-	}
 
 }

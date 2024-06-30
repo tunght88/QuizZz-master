@@ -1,79 +1,47 @@
 (function() {
 
-	var app = angular.module("playQuizApp", []);
+	var app = angular.module("evaluateApp", []);
 
-	var playQuizCtrl = function($scope, $http) {	
+	var evaluateCtrl = function($scope, $http) {	
 		
 		$scope.Math = window.Math;
 		
-		var questions = [];
+		var successStep = ['1', '2.1', '2.2'];
 		var answers = [];
 		
-		$scope.totalQuestions = 0;
-		$scope.questionCount = 0;
 		
-		$scope.isPlaying = true;
+		$scope.step = 1;
+	    $scope.date = new Date();
+		
 		
 		$scope.initialize = function() {
-			if ($scope.quizId == 0)
+			console.log($scope.assessmentId);
+			if ($scope.assessmentId == 0)
 				return;
-			
-			$scope.playing = true;
-		
-			$http.get("/api/quizzes/" + $scope.quizId + "/questions?onlyValid=true")
-				.then(
-					function(response) {
-						questions = questions.concat(response.data);
-						$scope.totalQuestions = questions.length;
-						$scope.setQuestion($scope.questionCount);
-					}, 
-					function(reason) {
-						$scope.error = "Could not fetch the data.";
-					}
-				);
-		}
-		
-		$scope.setQuestion = function(questionNumber) {
 
-			$http.get("/api/questions/" + questions[questionNumber].id + "/answers")
+			$http.get("/api/assessments/" + $scope.assessmentId)
 				.then(
 					function(response) {
-						$scope.currentQuestion = questions[questionNumber];
-						$scope.currentAnswers = response.data;
+						$scope.assessment = response.data;
 					}, 
 					function(reason) {
 						$scope.error = "Could not fetch the data.";
 					}
 				);
 		}
-		
-		$scope.answerQuestion = function(selection,textAnswer) {
-			if (selection === undefined) {
-				alert("Please, choose an answer");
-				return;
-			}
-						
-			answers.push({
-				question: $scope.currentQuestion.id,
-				selectedAnswer: selection,
-				additionalAnswer:textAnswer
-			});
+		$scope.next = function() {
+			$scope.step++;
 			
-			$scope.questionCount++;
-			if ($scope.questionCount == $scope.totalQuestions) {
-				$scope.submitAnswers();
-			} else {
-				$scope.setQuestion($scope.questionCount);
-			}	
 		}
 		
 		$scope.submitAnswers = function() {
-			$http.post("/api/quizzes/" + $scope.quizId + "/submitAnswers",
-					JSON.stringify(answers))
+			var data ={};
+			$http.post("/api/assessments/" + $scope.assessmentId + "/submit",
+					JSON.stringify(data))
 			.then(
 				function(response) {
 					$scope.results = response.data;
-					$scope.playing = false;
+					$scope.evaluating = false;
 				}, 
 				function(reason) {
 					$scope.error = "Could not fetch the data.";
@@ -84,6 +52,6 @@
 		$scope.initialize();	
 	};
 
-	app.controller("PlayQuizCtrl", ["$scope", "$http", playQuizCtrl]);
+	app.controller("EvaluateCtrl", ["$scope", "$http", evaluateCtrl]);
 
 }());

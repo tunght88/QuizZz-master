@@ -103,13 +103,12 @@ public class QuizServiceImpl implements QuizService {
 				continue;
 			}
 
-			for (Response bundle : answersBundle) {
-				if (bundle.getQuestion().equals(question.getId())) {
-					isFound = true;
-					results.addAnswer(questionService.checkIsCorrectAnswer(question, bundle.getSelectedAnswer()));
-					break;
-				}
-			}
+//			for (Response bundle : answersBundle) {
+//				if (bundle.getQuestion().equals(question.getId())) {
+//					isFound = true;
+//					break;
+//				}
+//			}
 
 			if (!isFound) {
 				throw new InvalidParametersException("No answer found for question: " + question.getText());

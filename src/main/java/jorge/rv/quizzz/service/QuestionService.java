@@ -21,11 +21,6 @@ public interface QuestionService {
 
 	void delete(Question question) throws ResourceUnavailableException, UnauthorizedActionException;
 
-	Boolean checkIsCorrectAnswer(Question question, Long answer_id);
-
-	void setCorrectAnswer(Question question, Answer answer);
-
-	Answer getCorrectAnswer(Question question);
 
 	Answer addAnswerToQuestion(Answer answer, Question question);
 

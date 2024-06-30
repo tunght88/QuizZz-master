@@ -62,10 +62,6 @@ public class AnswerServiceImpl implements AnswerService {
 	@Override
 	public void delete(Answer answer) throws ResourceUnavailableException, UnauthorizedActionException {
 
-		if (questionService.checkIsCorrectAnswer(answer.getQuestion(), answer.getId())) {
-			throw new ActionRefusedException("The correct answer can't be deleted");
-		}
-
 		answerRepository.delete(answer);
 	}
 

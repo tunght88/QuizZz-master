@@ -17,8 +17,8 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "question")
-public class Question extends BaseModel implements UserOwned {
+@Table(name = "assessment_result")
+public class AssessmentResult extends BaseModel implements UserOwned {
 
 	@Size(min = 2, max = 3000, message = "The question should be between 2 and 3000 characters")
 	@NotNull(message = "Question text not provided")
@@ -26,14 +26,11 @@ public class Question extends BaseModel implements UserOwned {
 
 	@ManyToOne
 	@JsonIgnore
-	private Quiz quiz;
+	private Assessment assessment;
+	@ManyToOne
+	@JsonIgnore
+	private User user;
 
-	@Column(name = "q_order")
-	private Integer order;
-
-	//@JsonIgnore
-	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Answer> answers;
 
 
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
@@ -41,28 +38,11 @@ public class Question extends BaseModel implements UserOwned {
 
 	@JsonIgnore
 	private Boolean isValid = false;
-	@Column(name = "has_additional_answer")
-	private boolean hasAdditionalAnswer;
 
 	public Calendar getCreatedDate() {
 		return createdDate;
 	}
 
-	public List<Answer> getAnswers() {
-		return answers;
-	}
-
-	public void setAnswers(List<Answer> answers) {
-		this.answers = answers;
-	}
-
-	public Quiz getQuiz() {
-		return quiz;
-	}
-
-	public void setQuiz(Quiz quiz) {
-		this.quiz = quiz;
-	}
 
 	public String getText() {
 		return text;
@@ -75,15 +55,7 @@ public class Question extends BaseModel implements UserOwned {
 	@Override
 	@JsonIgnore
 	public User getUser() {
-		return quiz.getUser();
-	}
-
-	public Integer getOrder() {
-		return order;
-	}
-
-	public void setOrder(Integer order) {
-		this.order = order;
+		return assessment.getUser();
 	}
 
 	public Boolean getIsValid() {
@@ -95,12 +67,25 @@ public class Question extends BaseModel implements UserOwned {
 	}
 
 
-	public boolean isHasAdditionalAnswer() {
-		return hasAdditionalAnswer;
+	public Assessment getAssessment() {
+		return assessment;
 	}
 
-	public void setHasAdditionalAnswer(boolean hasAdditionalAnswer) {
-		this.hasAdditionalAnswer = hasAdditionalAnswer;
+
+	public void setAssessment(Assessment assessment) {
+		this.assessment = assessment;
 	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+	public void setCreatedDate(Calendar createdDate) {
+		this.createdDate = createdDate;
+	}
+
+
 
 }

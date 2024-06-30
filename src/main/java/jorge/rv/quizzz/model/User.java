@@ -2,9 +2,11 @@ package jorge.rv.quizzz.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
@@ -40,6 +42,9 @@ public class User extends BaseModel implements UserOwned, Serializable {
 	@Column(name = "admin")
 	private boolean admin;
 
+    @OneToMany(mappedBy = "user")
+	@JsonIgnore
+    List<AssessmentUser> assessmentUsers;
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar createdDate;
 
