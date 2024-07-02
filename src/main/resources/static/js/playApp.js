@@ -13,7 +13,8 @@
 		$scope.step = 1;
 	    $scope.date = new Date();
 		
-		
+
+	    $scope.result ={};
 		$scope.initialize = function() {
 			console.log($scope.assessmentId);
 			if ($scope.assessmentId == 0)
@@ -31,13 +32,13 @@
 		}
 		$scope.next = function() {
 			$scope.step++;
-			
+			if($scope.step == 9)
+				$scope.submitAnswers();
 		}
 		
 		$scope.submitAnswers = function() {
-			var data ={};
 			$http.post("/api/assessments/" + $scope.assessmentId + "/submit",
-					JSON.stringify(data))
+					JSON.stringify($scope.result))
 			.then(
 				function(response) {
 					$scope.results = response.data;

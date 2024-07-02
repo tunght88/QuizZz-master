@@ -1,5 +1,6 @@
 package jorge.rv.quizzz.model;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 
@@ -16,12 +17,12 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jorge.rv.quizzz.model.support.Response;
+
 @Entity
 @Table(name = "assessment_result")
 public class AssessmentResult extends BaseModel implements UserOwned {
 
-	@Size(min = 2, max = 3000, message = "The question should be between 2 and 3000 characters")
-	@NotNull(message = "Question text not provided")
 	private String text;
 
 	@ManyToOne
@@ -31,8 +32,21 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 	@JsonIgnore
 	private User user;
 
-
-
+	
+	private int v_3_1;
+	private int v_3_2_1;
+	private int v_3_2_2;
+	private int v_3_2_3;
+	private int v_3_2_4;
+	private int v_3_3;
+	private int v_3_4;
+	private int v_4;
+	private int v_4_4;
+	private BigDecimal v_4_4_2;
+	private BigDecimal v_4_5;
+	private float v_4_6;
+	private String v_4_7;
+	
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar createdDate;
 
@@ -41,6 +55,136 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 
 	public Calendar getCreatedDate() {
 		return createdDate;
+	}
+
+
+	public int getV_3_1() {
+		return v_3_1;
+	}
+
+
+	public void setV_3_1(int v_3_1) {
+		this.v_3_1 = v_3_1;
+	}
+
+
+	public int getV_3_2_1() {
+		return v_3_2_1;
+	}
+
+
+	public void setV_3_2_1(int v_3_2_1) {
+		this.v_3_2_1 = v_3_2_1;
+	}
+
+
+	public int getV_3_2_2() {
+		return v_3_2_2;
+	}
+
+
+	public void setV_3_2_2(int v_3_2_2) {
+		this.v_3_2_2 = v_3_2_2;
+	}
+
+
+	public int getV_3_2_3() {
+		return v_3_2_3;
+	}
+
+
+	public void setV_3_2_3(int v_3_2_3) {
+		this.v_3_2_3 = v_3_2_3;
+	}
+
+
+	public int getV_3_2_4() {
+		return v_3_2_4;
+	}
+
+
+	public void setV_3_2_4(int v_3_2_4) {
+		this.v_3_2_4 = v_3_2_4;
+	}
+
+
+	public int getV_3_3() {
+		return v_3_3;
+	}
+
+
+	public void setV_3_3(int v_3_3) {
+		this.v_3_3 = v_3_3;
+	}
+
+
+	public int getV_3_4() {
+		return v_3_4;
+	}
+
+
+	public void setV_3_4(int v_3_4) {
+		this.v_3_4 = v_3_4;
+	}
+
+
+	public int getV_4() {
+		return v_4;
+	}
+
+
+	public void setV_4(int v_4) {
+		this.v_4 = v_4;
+	}
+
+
+	public int getV_4_4() {
+		return v_4_4;
+	}
+
+
+	public void setV_4_4(int v_4_4) {
+		this.v_4_4 = v_4_4;
+	}
+
+
+	public BigDecimal getV_4_4_2() {
+		return v_4_4_2;
+	}
+
+
+	public void setV_4_4_2(BigDecimal v_4_4_2) {
+		this.v_4_4_2 = v_4_4_2;
+	}
+
+
+	public BigDecimal getV_4_5() {
+		return v_4_5;
+	}
+
+
+	public void setV_4_5(BigDecimal v_4_5) {
+		this.v_4_5 = v_4_5;
+	}
+
+
+	public float getV_4_6() {
+		return v_4_6;
+	}
+
+
+	public void setV_4_6(float v_4_6) {
+		this.v_4_6 = v_4_6;
+	}
+
+
+	public String getV_4_7() {
+		return v_4_7;
+	}
+
+
+	public void setV_4_7(String v_4_7) {
+		this.v_4_7 = v_4_7;
 	}
 
 
@@ -86,6 +230,23 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 		this.createdDate = createdDate;
 	}
 
+	public AssessmentResult(Response resp) {
+		this.v_3_1 = resp.getV_3_1();
+		this.v_3_2_1 = resp.getV_3_2_1();
+		this.v_3_2_2 = resp.getV_3_2_2();
+		this.v_3_2_3 = resp.getV_3_2_3();
+		this.v_3_2_4 = resp.getV_3_2_4();
+		this.v_3_3 = resp.getV_3_3();
+		this.v_3_4 = resp.getV_3_4();
+		this.v_4 =resp.getV_4();
+		this.v_4_4 = resp.getV_4_4();
+		this.v_4_4_2 = new BigDecimal(resp.getV_4_4_2());
+		this.setV_4_5(new BigDecimal(resp.getV_4_5()));
+		this.setV_4_6(Float.valueOf(resp.getV_4_6()));
+		this.setV_4_7(resp.getV_4_7());
+	}
 
+	public AssessmentResult() {
+	}
 
 }

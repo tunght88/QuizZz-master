@@ -67,12 +67,12 @@ public class AssessmentController {
 	}
 
 
-	@RequestMapping(value = "/{assessment_id}/submitAnswers", method = RequestMethod.POST)
+	@RequestMapping(value = "/{assessment_id}/submit", method = RequestMethod.POST)
 	@PreAuthorize("permitAll")
 	@ResponseStatus(HttpStatus.OK)
-	public AssessmentResult playQuiz(@PathVariable long assessment_id, @RequestBody List<Response> answersBundle,@AuthenticationPrincipal AuthenticatedUser user) {
+	public AssessmentResult playQuiz(@PathVariable long assessment_id, @RequestBody Response resp,@AuthenticationPrincipal AuthenticatedUser user) {
 		Assessment assessment = assessmentService.find(assessment_id);
-		AssessmentResult result = new AssessmentResult();
+		AssessmentResult result = new AssessmentResult(resp);
 		return assessmentService.save(result,user.getUser());
 	}
 
