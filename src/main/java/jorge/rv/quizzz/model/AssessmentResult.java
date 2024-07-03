@@ -42,8 +42,8 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 	private int v_3_4;
 	private int v_4;
 	private int v_4_4;
-	private BigDecimal v_4_4_2;
-	private BigDecimal v_4_5;
+	private String v_4_4_2;
+	private String v_4_5;
 	private float v_4_6;
 	private String v_4_7;
 	
@@ -148,22 +148,22 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 	}
 
 
-	public BigDecimal getV_4_4_2() {
+	public String getV_4_4_2() {
 		return v_4_4_2;
 	}
 
 
-	public void setV_4_4_2(BigDecimal v_4_4_2) {
+	public void setV_4_4_2(String v_4_4_2) {
 		this.v_4_4_2 = v_4_4_2;
 	}
 
 
-	public BigDecimal getV_4_5() {
+	public String getV_4_5() {
 		return v_4_5;
 	}
 
 
-	public void setV_4_5(BigDecimal v_4_5) {
+	public void setV_4_5(String v_4_5) {
 		this.v_4_5 = v_4_5;
 	}
 
@@ -240,8 +240,8 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 		this.v_3_4 = resp.getV_3_4();
 		this.v_4 =resp.getV_4();
 		this.v_4_4 = resp.getV_4_4();
-		this.v_4_4_2 = new BigDecimal(resp.getV_4_4_2());
-		this.setV_4_5(new BigDecimal(resp.getV_4_5()));
+		this.v_4_4_2 = resp.getV_4_4_2();
+		this.setV_4_5(resp.getV_4_5());
 		this.setV_4_6(Float.valueOf(resp.getV_4_6()));
 		this.setV_4_7(resp.getV_4_7());
 	}

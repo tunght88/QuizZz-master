@@ -2,7 +2,7 @@
 
 	var app = angular.module("evaluateApp", []);
 
-	var evaluateCtrl = function($scope, $http) {	
+	var evaluateCtrl = function($scope, $http,$parse) {	
 		
 		$scope.Math = window.Math;
 		
@@ -10,13 +10,12 @@
 		var answers = [];
 		
 		
-		$scope.step = 1;
+		$scope.step = 8;
 	    $scope.date = new Date();
-		
-
+		$scope.validateSuccess = true;
+		$scope.lastStep = 1;
 	    $scope.result ={};
 		$scope.initialize = function() {
-			console.log($scope.assessmentId);
 			if ($scope.assessmentId == 0)
 				return;
 
@@ -30,12 +29,121 @@
 					}
 				);
 		}
+		$scope.isNumberKey = function(evt, obj) {
+			var theEvent = evt || window.event;
+			var key = theEvent.keyCode || theEvent.which;
+			key = String.fromCharCode(key);
+			var regex = /^[0-9.,]+$/;
+			if (!regex.test(key)) {
+				theEvent.returnValue = false;
+				if (theEvent.preventDefault)
+					theEvent.preventDefault();
+			}
+		
+		}
+		$scope.back = function() {
+			$scope.step = $scope.lastStep;
+		}
+		$scope.validateCheckbox = function(field){
+			var model = $parse('msg_' + field);
+			if($scope.$eval('result.' + field) == undefined){
+				model.assign($scope, 'Please choose at least one option');
+				$scope.validateSuccess = false;
+			}else
+				model.assign($scope, '');
+		}
+		$scope.validateText = function(field){
+			var model = $parse('msg_' + field);
+			if($scope.$eval('result.' + field) == undefined){
+				model.assign($scope, 'Please input value');
+				$scope.validateSuccess = false;
+			}else
+				model.assign($scope, '');
+		}
+		$scope.validateRate = function(field){
+			var model = $parse('msg_' + field);
+			var val = $scope.$eval('result.' + field);
+			if(val == undefined){
+				model.assign($scope, 'Please input value');
+				$scope.validateSuccess = false;
+			}else if(Number(val) > 30 || Number(val) < 20){
+				model.assign($scope, 'Please input value between 20 and 30');
+				$scope.validateSuccess = false;
+			}else
+				model.assign($scope, '');
+		}
 		$scope.next = function() {
-			$scope.step++;
+			$scope.validateSuccess = true;
+			$scope.lastStep = $scope.step;
+			switch($scope.step){
+				case 1 : 
+					break;
+				case 2 : 
+					$scope.validateCheckbox('v_3_1');
+					$scope.validateCheckbox('v_3_2_1');
+					if(!$scope.validateSuccess)
+						return;
+					if($scope.v_3_2_1 == 0)
+						$scope.step == 5;
+					break;
+				case 3 : 
+					$scope.validateCheckbox('v_3_2_2');
+					$scope.validateCheckbox('v_3_2_3');
+					$scope.validateCheckbox('v_3_2_4');
+					if(!$scope.validateSuccess)
+						return;
+					if($scope.v_3_2_4 == 0)
+						$scope.step == 5;
+					break;
+				case 4 : 
+					$scope.validateCheckbox('v_3_3');
+					$scope.validateCheckbox('v_3_4');
+					if(!$scope.validateSuccess)
+						return;
+					break;
+				case 5 : 
+					$scope.validateCheckbox('v_4');
+					if(!$scope.validateSuccess)
+						return;
+					if($scope.v_4 == 0)
+						$scope.step == 9;
+					break;
+				case 6 : 
+					$scope.validateCheckbox('v_4_4');
+					if(!$scope.validateSuccess)
+						return;
+					break;
+				case 7 : 
+					$scope.validateText('v_4_4_2');
+					if(!$scope.validateSuccess)
+						return;
+					break;
+				case 8 : 
+					$scope.validateText('v_4_5');
+					$scope.validateRate('v_4_6');
+					if(!$scope.validateSuccess)
+						return;
+					break;
+			}
+			if($scope.lastStep == $scope.step && $scope.step < 9)
+				$scope.step++;
+				
 			if($scope.step == 9)
 				$scope.submitAnswers();
 		}
-		
+			/*private int v_3_1;
+	private int v_3_2_1;
+	private int v_3_2_2;
+	private int v_3_2_3;
+	private int v_3_2_4;
+	private int v_3_3;
+	private int v_3_4;
+	private int v_4;
+	private int v_4_4;
+	private String v_4_4_2;
+	private String v_4_5;
+	private String v_4_6;
+	private String v_4_7;*/
 		$scope.submitAnswers = function() {
 			$http.post("/api/assessments/" + $scope.assessmentId + "/submit",
 					JSON.stringify($scope.result))
@@ -53,6 +161,6 @@
 		$scope.initialize();	
 	};
 
-	app.controller("EvaluateCtrl", ["$scope", "$http", evaluateCtrl]);
+	app.controller("EvaluateCtrl", ["$scope", "$http", "$parse", evaluateCtrl]);
 
 }());
