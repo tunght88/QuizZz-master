@@ -106,7 +106,8 @@ public class WebQuizController {
 
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("assessment", assessment);
-		mav.addObject("user", user.getUser());
+		if(user != null)
+			mav.addObject("user", user.getUser());
 		mav.setViewName("quizView");
 
 		return mav;

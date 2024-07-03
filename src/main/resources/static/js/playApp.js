@@ -74,6 +74,8 @@
 		}
 		$scope.next = function() {
 			$scope.validateSuccess = true;
+			if($scope.step == 9)
+				return;
 			$scope.lastStep = $scope.step;
 			switch($scope.step){
 				case 1 : 
@@ -83,8 +85,8 @@
 					$scope.validateCheckbox('v_3_2_1');
 					if(!$scope.validateSuccess)
 						return;
-					if($scope.v_3_2_1 == 0)
-						$scope.step == 5;
+					if($scope.result.v_3_2_1 == 0)
+						$scope.step = 5;
 					break;
 				case 3 : 
 					$scope.validateCheckbox('v_3_2_2');
@@ -92,8 +94,8 @@
 					$scope.validateCheckbox('v_3_2_4');
 					if(!$scope.validateSuccess)
 						return;
-					if($scope.v_3_2_4 == 0)
-						$scope.step == 5;
+					if($scope.result.v_3_2_4 == 0)
+						$scope.step = 5;
 					break;
 				case 4 : 
 					$scope.validateCheckbox('v_3_3');
@@ -105,8 +107,8 @@
 					$scope.validateCheckbox('v_4');
 					if(!$scope.validateSuccess)
 						return;
-					if($scope.v_4 == 0)
-						$scope.step == 9;
+					if($scope.result.v_4 == 0)
+						$scope.step = 9;
 					break;
 				case 6 : 
 					$scope.validateCheckbox('v_4_4');
@@ -124,6 +126,7 @@
 					if(!$scope.validateSuccess)
 						return;
 					break;
+				default: return;
 			}
 			if($scope.lastStep == $scope.step && $scope.step < 9)
 				$scope.step++;

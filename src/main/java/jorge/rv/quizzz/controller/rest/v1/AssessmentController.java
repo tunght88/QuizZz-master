@@ -73,6 +73,7 @@ public class AssessmentController {
 	public AssessmentResult playQuiz(@PathVariable long assessment_id, @RequestBody Response resp,@AuthenticationPrincipal AuthenticatedUser user) {
 		Assessment assessment = assessmentService.find(assessment_id);
 		AssessmentResult result = new AssessmentResult(resp);
+		result.setAssessment(assessment);
 		return assessmentService.save(result,user.getUser());
 	}
 
