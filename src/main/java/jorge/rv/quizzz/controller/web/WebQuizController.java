@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import jorge.rv.quizzz.controller.utils.RestVerifier;
 import jorge.rv.quizzz.exceptions.ModelVerificationException;
 import jorge.rv.quizzz.model.Assessment;
+import jorge.rv.quizzz.model.AssessmentResult;
 import jorge.rv.quizzz.model.AuthenticatedUser;
 import jorge.rv.quizzz.model.Question;
 import jorge.rv.quizzz.model.Quiz;
@@ -106,8 +107,12 @@ public class WebQuizController {
 
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("assessment", assessment);
-		if(user != null)
+		AssessmentResult result = new AssessmentResult();
+		if(user != null) {
 			mav.addObject("user", user.getUser());
+			result.setV_2_1(user.getUsername());
+		}
+		mav.addObject("result", result);
 		mav.setViewName("quizView");
 
 		return mav;

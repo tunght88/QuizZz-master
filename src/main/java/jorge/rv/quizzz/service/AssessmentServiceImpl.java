@@ -91,6 +91,10 @@ public class AssessmentServiceImpl implements AssessmentService {
 	}
 
 	@Override
+	public AssessmentResult save(AssessmentResult assessmentResult) {
+		return assessmentResultRepository.save(assessmentResult);
+	}
+	@Override
 	public Page<Assessment> search(String query, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;

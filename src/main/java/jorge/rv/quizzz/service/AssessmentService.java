@@ -12,6 +12,7 @@ import jorge.rv.quizzz.model.User;
 public interface AssessmentService {
 	Assessment save(Assessment assessment, User user);
 	AssessmentResult save(AssessmentResult assessmentResult, User user);
+	AssessmentResult save(AssessmentResult assessmentResult);
 
 	Page<Assessment> findAll(Pageable pageable);
 

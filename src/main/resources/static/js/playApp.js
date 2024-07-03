@@ -9,12 +9,12 @@
 		var successStep = ['1', '2.1', '2.2'];
 		var answers = [];
 		
-		
+//		$scope.x = ${user.username};
 		$scope.step = 1;
 	    $scope.date = new Date();
 		$scope.validateSuccess = true;
 		$scope.lastStep = 1;
-	    $scope.result ={};
+//	    $scope.result ={};
 		$scope.initialize = function() {
 			if ($scope.assessmentId == 0)
 				return;
@@ -76,7 +76,7 @@
 			$scope.validateSuccess = true;
 			if($scope.step == 9)
 				return;
-			$scope.lastStep = $scope.step;
+			var nextStep;
 			switch($scope.step){
 				case 1 : 
 					break;
@@ -86,7 +86,7 @@
 					if(!$scope.validateSuccess)
 						return;
 					if($scope.result.v_3_2_1 == 0)
-						$scope.step = 5;
+						nextStep = 5;
 					break;
 				case 3 : 
 					$scope.validateCheckbox('v_3_2_2');
@@ -95,7 +95,7 @@
 					if(!$scope.validateSuccess)
 						return;
 					if($scope.result.v_3_2_4 == 0)
-						$scope.step = 5;
+						nextStep = 5;
 					break;
 				case 4 : 
 					$scope.validateCheckbox('v_3_3');
@@ -108,7 +108,7 @@
 					if(!$scope.validateSuccess)
 						return;
 					if($scope.result.v_4 == 0)
-						$scope.step = 9;
+						nextStep = 9;
 					break;
 				case 6 : 
 					$scope.validateCheckbox('v_4_4');
@@ -128,25 +128,16 @@
 					break;
 				default: return;
 			}
-			if($scope.lastStep == $scope.step && $scope.step < 9)
+			$scope.lastStep = $scope.step;
+			
+			if(nextStep ==undefined && $scope.step < 9)
 				$scope.step++;
-				
+			else
+				$scope.step = nextStep;
 			if($scope.step == 9)
 				$scope.submitAnswers();
 		}
-			/*private int v_3_1;
-	private int v_3_2_1;
-	private int v_3_2_2;
-	private int v_3_2_3;
-	private int v_3_2_4;
-	private int v_3_3;
-	private int v_3_4;
-	private int v_4;
-	private int v_4_4;
-	private String v_4_4_2;
-	private String v_4_5;
-	private String v_4_6;
-	private String v_4_7;*/
+
 		$scope.submitAnswers = function() {
 			$http.post("/api/assessments/" + $scope.assessmentId + "/submit",
 					JSON.stringify($scope.result))

@@ -32,7 +32,8 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 	@JsonIgnore
 	private User user;
 
-	
+
+	private String v_2_1;
 	private int v_3_1;
 	private int v_3_2_1;
 	private int v_3_2_2;
@@ -55,6 +56,16 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 
 	public Calendar getCreatedDate() {
 		return createdDate;
+	}
+
+
+	public String getV_2_1() {
+		return v_2_1;
+	}
+
+
+	public void setV_2_1(String v_2_1) {
+		this.v_2_1 = v_2_1;
 	}
 
 
@@ -231,6 +242,7 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 	}
 
 	public AssessmentResult(Response resp) {
+		this.v_2_1 = resp.getV_2_1();
 		this.v_3_1 = resp.getV_3_1();
 		this.v_3_2_1 = resp.getV_3_2_1();
 		this.v_3_2_2 = resp.getV_3_2_2();

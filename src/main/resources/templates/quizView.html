@@ -30,7 +30,8 @@
 						<h2 class="" style="font-weight: bold;">2. Người đánh giá:</h2>
 						<div style="display: flex; justify-content: flex-start;">
 							<h4 class=""><b>2.1 Họ và tên: &nbsp;</b></h4>
-							<h4 th:if="${user!=null}" th:text="${user.username}" class=""></h4>
+<!-- 							<h4 th:if="${user!=null}" th:text="${user.username}" class=""></h4> -->
+							<input th:if="${user!=null}" name="v_2_1" class="form-control" required="true" style="width: 80%"  ng-model="result.v_2_1"/>
 							<input th:if="${user==null}" name="v_2_1" class="form-control" required="true" style="width: 80%"  ng-model="result.v_2_1"/>
 						</div>
 						<h2 class="" style="font-weight: bold;">2.2  Thời điểm nhận Đơn và Hồ sơ sáng kiến để đánh giá</h2>
