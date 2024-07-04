@@ -10,7 +10,7 @@
 		var answers = [];
 		
 //		$scope.x = ${user.username};
-		$scope.step = 1;
+		$scope.step = 9;
 	    $scope.date = new Date();
 		$scope.validateSuccess = true;
 		$scope.lastStep = 1;

@@ -2,6 +2,9 @@ package jorge.rv.quizzz.controller.rest.v1;
 
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +77,10 @@ public class AssessmentController {
 		Assessment assessment = assessmentService.find(assessment_id);
 		AssessmentResult result = new AssessmentResult(resp);
 		result.setAssessment(assessment);
-		return assessmentService.save(result,user.getUser());
+		if(user != null)
+			return assessmentService.save(result,user.getUser());
+		else
+			return assessmentService.save(result);
 	}
 
 }

@@ -171,9 +171,12 @@
 						<span style="color:Red">{{msg_v_4_7}}</span>
 					</div>
 			     </form>
-				<div class="btn-grp">
-				<button th:text="#{label.back}" class="btn btn-primary" type="submit" ng-click="back()"></button>
-				<button th:text="#{label.next}" class="btn btn-primary" type="submit" ng-click="next()"></button>
+				<div class="btn-grp" ng-show="step != 9">
+					<button th:text="#{label.back}" class="btn btn-primary" type="submit" ng-click="back()"></button>
+					<button th:text="#{label.next}" class="btn btn-primary" type="submit" ng-click="next()"></button>
+				</div>
+				<div ng-show="step==9">
+					<img alt="" src="/images/tk.png" width="100%"></img>
 				</div>
 			
 		</div>
