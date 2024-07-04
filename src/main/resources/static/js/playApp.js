@@ -10,7 +10,7 @@
 		var answers = [];
 		
 //		$scope.x = ${user.username};
-		$scope.step = 9;
+		$scope.step = 8;
 	    $scope.date = new Date();
 		$scope.validateSuccess = true;
 		$scope.lastStep = 1;
@@ -121,8 +121,8 @@
 						return;
 					break;
 				case 8 : 
-					$scope.validateText('v_4_5');
-					$scope.validateRate('v_4_6');
+//					$scope.validateText('v_4_5');
+//					$scope.validateRate('v_4_6');
 					if(!$scope.validateSuccess)
 						return;
 					break;
@@ -139,17 +139,16 @@
 		}
 
 		$scope.submitAnswers = function() {
-			$http.post("/api/assessments/" + $scope.assessmentId + "/submit",
-					JSON.stringify($scope.result))
-			.then(
-				function(response) {
-					$scope.results = response.data;
-					$scope.evaluating = false;
-				}, 
-				function(reason) {
-					$scope.error = "Could not fetch the data.";
-				}
-			);
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', "/api/assessments/" + $scope.assessmentId + "/submit", true);
+			xhr.responseType = 'blob';
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.onload = function (e) {
+			    var blob = e.currentTarget.response;
+			    saveAs(blob,"BM02.docx")
+			}
+//			xhr.send(JSON.stringify($scope.result));
+			xhr.send('{"v_3_1":1,"v_3_2_1":1,"v_3_2_2":1,"v_3_2_3":1,"v_3_2_4":1,"v_3_3":1,"v_3_4":1,"v_4":1,"v_4_4":1,"v_4_4_2":"435435","v_4_5":"345345","v_4_6":"101"}');
 		}
 	
 		$scope.initialize();	

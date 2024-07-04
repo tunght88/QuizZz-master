@@ -1,14 +1,26 @@
 package jorge.rv.quizzz.controller.web;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff;
+import org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff1;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTOnOff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -103,8 +115,9 @@ public class WebQuizController {
 	@RequestMapping(value = "/assessment/{assessment_id}", method = RequestMethod.GET)
 	@PreAuthorize("permitAll")
 	public ModelAndView getQuiz(@PathVariable long assessment_id,@AuthenticationPrincipal AuthenticatedUser user) {
-		Assessment assessment = assessmentService.find(assessment_id);
 
+		
+		Assessment assessment = assessmentService.find(assessment_id);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("assessment", assessment);
 		AssessmentResult result = new AssessmentResult();
@@ -118,15 +131,5 @@ public class WebQuizController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/quiz/{quiz_id}/play", method = RequestMethod.GET)
-	@PreAuthorize("permitAll")
-	public ModelAndView playQuiz(@PathVariable long quiz_id) {
-		Quiz quiz = quizService.find(quiz_id);
 
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("quiz", quiz);
-		mav.setViewName("playQuiz");
-
-		return mav;
-	}
 }
