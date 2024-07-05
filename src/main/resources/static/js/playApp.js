@@ -10,7 +10,7 @@
 		var answers = [];
 		
 //		$scope.x = ${user.username};
-		$scope.step = 8;
+		$scope.step = 1;
 	    $scope.date = new Date();
 		$scope.validateSuccess = true;
 		$scope.lastStep = 1;
@@ -73,6 +73,7 @@
 				model.assign($scope, '');
 		}
 		$scope.next = function() {
+			$scope.forceFail=false;
 			$scope.validateSuccess = true;
 			if($scope.step == 9)
 				return;
@@ -85,8 +86,11 @@
 					$scope.validateCheckbox('v_3_2_1');
 					if(!$scope.validateSuccess)
 						return;
-					if($scope.result.v_3_2_1 == 0)
+					if($scope.result.v_3_2_1 == 0){
+						$scope.forceFail=true;
 						nextStep = 5;
+						$scope.result.v_4=0;
+					}
 					break;
 				case 3 : 
 					$scope.validateCheckbox('v_3_2_2');
@@ -94,8 +98,11 @@
 					$scope.validateCheckbox('v_3_2_4');
 					if(!$scope.validateSuccess)
 						return;
-					if($scope.result.v_3_2_4 == 0)
+					if($scope.result.v_3_2_4 == 0){
+						$scope.forceFail=true;
 						nextStep = 5;
+						$scope.result.v_4=0;
+					}
 					break;
 				case 4 : 
 					$scope.validateCheckbox('v_3_3');
@@ -121,8 +128,8 @@
 						return;
 					break;
 				case 8 : 
-//					$scope.validateText('v_4_5');
-//					$scope.validateRate('v_4_6');
+					$scope.validateText('v_4_5');
+					$scope.validateRate('v_4_6');
 					if(!$scope.validateSuccess)
 						return;
 					break;
@@ -147,8 +154,8 @@
 			    var blob = e.currentTarget.response;
 			    saveAs(blob,"BM02.docx")
 			}
-//			xhr.send(JSON.stringify($scope.result));
-			xhr.send('{"v_3_1":1,"v_3_2_1":1,"v_3_2_2":1,"v_3_2_3":1,"v_3_2_4":1,"v_3_3":1,"v_3_4":1,"v_4":1,"v_4_4":1,"v_4_4_2":"435435","v_4_5":"345345","v_4_6":"101"}');
+			xhr.send(JSON.stringify($scope.result));
+//			xhr.send('{"v_3_1":1,"v_3_2_1":1,"v_3_2_2":1,"v_3_2_3":1,"v_3_2_4":1,"v_3_3":1,"v_3_4":1,"v_4":1,"v_4_4":1,"v_4_4_2":"435435","v_4_5":"33","v_4_6":"22","v_4_7":1,"v_4_8":"xxx"}');
 		}
 	
 		$scope.initialize();	

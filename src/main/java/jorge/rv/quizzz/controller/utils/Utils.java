@@ -13,7 +13,10 @@ public class Utils {
 	    try {
 			for (Field field: fields) {
 			    field.setAccessible(true);
-			    map.put(field.getName() + "_" + field.get(object), field.get(object));
+			    if(field.getType().equals(Integer.class))
+			    	map.put(field.getName() + "_" + field.get(object), field.get(object));
+			    else
+			    	map.put("{" +field.getName() +"}" , field.get(object));
 			}
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block

@@ -37,6 +37,8 @@ public class Assessment extends BaseModel implements UserOwned {
 	@OneToOne
 	private Council council;
 	@OneToOne
+	private Level level;
+	@OneToOne
 	private Period period;
 
     @OneToMany(mappedBy = "assessment")
@@ -65,6 +67,14 @@ public class Assessment extends BaseModel implements UserOwned {
 
 	public String getName() {
 		return name;
+	}
+
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
 	}
 
 	public void setDescription(String description) {

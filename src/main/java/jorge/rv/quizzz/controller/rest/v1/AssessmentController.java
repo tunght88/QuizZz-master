@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -98,18 +99,24 @@ public class AssessmentController {
 	public ResponseEntity<Resource>  playQuiz(@PathVariable long assessment_id, @RequestBody Response resp,@AuthenticationPrincipal AuthenticatedUser user) {
 		Assessment assessment = assessmentService.find(assessment_id);
 		AssessmentResult result = new AssessmentResult(resp);
+		result.setCreatedDate(Calendar.getInstance());
 		result.setAssessment(assessment);
 		if(user != null)
-			assessmentService.save(result,user.getUser());
+			result = assessmentService.save(result,user.getUser());
 		else
-			assessmentService.save(result);
+			result = assessmentService.save(result);
 		XWPFDocument document = null;
 		File file = null;
 		OutputStream os = null;
 		Resource resource = null;
 		Map<String,Object> map = Utils.getMap(resp);
 		map.put("{ideaName}", assessment.getIdea().getText());
+		map.put("{username}", result.getV_2_1());
+		map.put("{level}", assessment.getLevel().getText());
 		map.put("{member}", assessment.getIdea().getMembers());
+		map.put("{day}", result.getCreatedDate().get(Calendar.DAY_OF_MONTH) +"");
+		map.put("{month}", result.getCreatedDate().get(Calendar.MONTH) +"");
+		map.put("{year}", result.getCreatedDate().get(Calendar.YEAR) +"");
 		try {
 			file = ResourceUtils.getFile("classpath:static/word/BM02.docx");
 			document = new XWPFDocument(new FileInputStream(file));
@@ -133,6 +140,9 @@ public class AssessmentController {
 	            		}
 	            		//text
 	            		if(map.containsKey(xwpfRun.getText(0))) {
+	            			if(map.get(xwpfRun.getText(0).trim()) == null) {
+	            				xwpfRun.setText("",0);
+	            			}
 	            			if(map.get(xwpfRun.getText(0)) instanceof  String){
 	            				xwpfRun.setText(String.valueOf(map.get(xwpfRun.getText(0))),0);
 	            			}
@@ -155,11 +165,6 @@ public class AssessmentController {
 	            						paragraph.setSpacingAfter(xwpfParagraph.getSpacingAfter());
 	            						paragraph.setSpacingBefore(xwpfParagraph.getSpacingBefore());
 	            						paragraph.setSpacingLineRule(xwpfParagraph.getSpacingLineRule());
-//	            						paragraph.setSpacingAfterLines(xwpfParagraph.getSpacingAfterLines());
-//	            						paragraph.setSpacingBeforeLines(xwpfParagraph.getSpacingBeforeLines());
-//	            						paragraph.setFirstLineIndent(xwpfParagraph.getFirstLineIndent());
-//	            						paragraph.setIndentationLeft(xwpfParagraph.getIndentationLeft());
-//	            						paragraph.setIndentationHanging(xwpfParagraph.getIndentationHanging());
 	            					}
 								}
 	            			}

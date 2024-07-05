@@ -87,6 +87,7 @@ public class AssessmentServiceImpl implements AssessmentService {
 	@Override
 	public AssessmentResult save(AssessmentResult assessmentResult, User user) {
 		assessmentResult.setUser(user);
+		assessmentResult.setV_2_1(user.getUsername());
 		return assessmentResultRepository.save(assessmentResult);
 	}
 

@@ -30,8 +30,7 @@
 						<h2 class="" style="font-weight: bold;">2. Người đánh giá:</h2>
 						<div style="display: flex; justify-content: flex-start;">
 							<h4 class=""><b>2.1 Họ và tên: &nbsp;</b></h4>
-<!-- 							<h4 th:if="${user!=null}" th:text="${user.username}" class=""></h4> -->
-							<input th:if="${user!=null}" name="v_2_1" class="form-control" required="true" style="width: 80%"  ng-model="result.v_2_1"/>
+							<h4 th:if="${user!=null}" th:text="${user.username}" class=""></h4>
 							<input th:if="${user==null}" name="v_2_1" class="form-control" required="true" style="width: 80%"  ng-model="result.v_2_1"/>
 						</div>
 						<h2 class="" style="font-weight: bold;">2.2  Thời điểm nhận Đơn và Hồ sơ sáng kiến để đánh giá</h2>
@@ -130,13 +129,13 @@
 						
 						<h3 class="">Lựa chọn có/ không công nhận sáng kiến theo tiêu chí trên</h3> 
 						<div class="radio">
-		        			<input type="radio" ng-model="result.v_4" ng-value="0" name="v_4">4.1 Không công nhận sáng kiến nếu đánh giá ở trên thuộc một trong các trường hợp:</input>
+		        			<input type="radio" ng-model="result.v_4" ng-value="0" name="v_4" ng-disabled="forceFail">4.1 Không công nhận sáng kiến nếu đánh giá ở trên thuộc một trong các trường hợp:</input>
 	        			</div>
 		        		<div class="radio">
-		        			<input type="radio" ng-model="result.v_4" ng-value="2" name="v_4">4.2 Công nhận sáng kiến nhưng đề nghị hoàn thiện hồ sơ sáng kiến</input>
+		        			<input type="radio" ng-model="result.v_4" ng-value="2" name="v_4" ng-disabled="forceFail">4.2 Công nhận sáng kiến nhưng đề nghị hoàn thiện hồ sơ sáng kiến</input>
 		        		</div>
 		        		<div class="radio">
-		        			<input type="radio" ng-model="result.v_4" ng-value="1" name="v_4">4.3 Công nhận sáng kiến</input>
+		        			<input type="radio" ng-model="result.v_4" ng-value="1" name="v_4" ng-disabled="forceFail">4.3 Công nhận sáng kiến</input>
 		        		</div>
 						<span style="color:Red">{{msg_v_4}}</span>
 					</div>
@@ -175,8 +174,9 @@
 						<span style="color:Red">{{msg_v_4_8}}</span>
 					</div>
 			     </form>
-				<div class="btn-grp" ng-show="step != 9">
+				<div class="btn-grp" ng-show="step != 9" style="text-align: center;">
 					<button th:text="#{label.back}" class="btn btn-primary" type="submit" ng-click="back()"></button>
+					&nbsp;&nbsp;&nbsp;&nbsp;
 					<button th:text="#{label.next}" class="btn btn-primary" type="submit" ng-click="next()"></button>
 				</div>
 				<div ng-show="step==9">
