@@ -14,11 +14,21 @@ public class Response {
 	private String v_4_4_2;
 	private String v_4_5;
 	private String v_4_6;
-	private String v_4_7;
+	private int v_4_7;
+	private String v_4_8;
 	
 	
 	
 
+	public String getV_4_8() {
+		return v_4_8;
+	}
+	public void setV_4_8(String v_4_8) {
+		this.v_4_8 = v_4_8;
+	}
+	public void setV_4_7(int v_4_7) {
+		this.v_4_7 = v_4_7;
+	}
 	public String getV_2_1() {
 		return v_2_1;
 	}
@@ -97,26 +107,8 @@ public class Response {
 	public void setV_4_6(String v_4_6) {
 		this.v_4_6 = v_4_6;
 	}
-	public String getV_4_7() {
+	public int getV_4_7() {
 		return v_4_7;
 	}
-	public void setV_4_7(String v_4_7) {
-		this.v_4_7 = v_4_7;
-	}
-	private String key;
-	private String value;
-	public String getKey() {
-		return key;
-	}
-	public void setKey(String key) {
-		this.key = key;
-	}
-	public String getValue() {
-		return value;
-	}
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-
+	
 }

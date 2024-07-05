@@ -166,9 +166,13 @@
 						<h3 class="">4.6. Đề xuất mức thù lao chung cho những người tham gia tổ chức áp dụng sáng kiến lần đầu trong 03 năm   (mức tối đa 30% thù lao tác giả nêu tại mục 4.5, theo điều 40 Quy chế quản lý hoạt động KHCN trong tập đoàn Điện lực Quốc gia Việt Nam; tối thiểu 20% theo Điều 10 Điều lệ sáng kiến)</h3> 
 				        <input  name="v_4_6" class="form-control" required="true" type="text"   ng-model="result.v_4_6" min="20" max="30" ng-keypress="isNumberKey($event)"/>
 						<span style="color:Red">{{msg_v_4_6}}</span>
-    					<h3 class="">4.7. Ý kiến khác</h3> 
-				        <input  name="v_4_7" class="form-control" required="true"   ng-model="result.v_4_7"/>
-						<span style="color:Red">{{msg_v_4_7}}</span>
+						
+		        		<div class="checkbox">
+		        			<input type="checkbox" ng-model="result.v_4_7" ng-value="1" name="v_4_7">4.7. Đề xuất đăng ký công nhận sáng kiến cấp cao hơn (đối với cấp cơ sở tại Đơn vị và cấp Tổng công ty)</input>
+		        		</div>
+    					<h3 class="">4.8. Ý kiến khác</h3> 
+				        <input  name="v_4_8" class="form-control" required="true"   ng-model="result.v_4_8"/>
+						<span style="color:Red">{{msg_v_4_8}}</span>
 					</div>
 			     </form>
 				<div class="btn-grp" ng-show="step != 9">

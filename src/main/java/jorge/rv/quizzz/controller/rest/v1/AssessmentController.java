@@ -9,11 +9,16 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.xwpf.usermodel.BreakClear;
+import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.xmlbeans.XmlCursor;
 import org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff1;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTOnOff;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +45,7 @@ import jorge.rv.quizzz.controller.utils.Utils;
 import jorge.rv.quizzz.model.Assessment;
 import jorge.rv.quizzz.model.AssessmentResult;
 import jorge.rv.quizzz.model.AuthenticatedUser;
+import jorge.rv.quizzz.model.Member;
 import jorge.rv.quizzz.model.support.Response;
 import jorge.rv.quizzz.service.AssessmentService;
 
@@ -102,29 +108,64 @@ public class AssessmentController {
 		OutputStream os = null;
 		Resource resource = null;
 		Map<String,Object> map = Utils.getMap(resp);
+		map.put("{ideaName}", assessment.getIdea().getText());
+		map.put("{member}", assessment.getIdea().getMembers());
 		try {
 			file = ResourceUtils.getFile("classpath:static/word/BM02.docx");
 			document = new XWPFDocument(new FileInputStream(file));
             List<XWPFParagraph> paragraphs = document.getParagraphs();
-            int i = 0;
     		CTOnOff on =CTOnOff.Factory.newInstance();
     		on.setVal(STOnOff1.ON);
     		CTOnOff off =CTOnOff.Factory.newInstance();
     		off.setVal(STOnOff1.OFF);
-            for (XWPFParagraph xwpfParagraph : paragraphs) {
-            	i++;
-            		System.out.println();
+            for (int i = 0; i < paragraphs.size(); i++) {
+            	XWPFParagraph xwpfParagraph = paragraphs.get(i);
 	            	List<XWPFRun> runs = xwpfParagraph.getRuns();
-	            	int j = 0;
-	            	for (XWPFRun xwpfRun : runs) {
+	            	
+	            	for (int j = 0; j < runs.size(); j++) {
+	            		XWPFRun xwpfRun = runs.get(j);
+	            		//check
 	            		if(xwpfRun.getCTR().getFldCharList().size() >0 && xwpfRun.getCTR().getFldCharList().get(0).getFfData() != null && xwpfRun.getCTR().getFldCharList().get(0).getFfData().getCheckBoxList().size() > 0 && xwpfRun.getCTR().getFldCharList().get(0).getFfData().getNameList().size() > 0) {
             				String name = xwpfRun.getCTR().getFldCharList().get(0).getFfData().getNameList().get(0).getVal();
 	            			if(map.containsKey(name)) {
 		                		xwpfRun.getCTR().getFldCharList().get(0).getFfData().getCheckBoxList().get(0).setChecked(on);
 	            			}
 	            		}
-	            		j++;
-	                	if(i==14 && j ==1) {}
+	            		//text
+	            		if(map.containsKey(xwpfRun.getText(0))) {
+	            			if(map.get(xwpfRun.getText(0)) instanceof  String){
+	            				xwpfRun.setText(String.valueOf(map.get(xwpfRun.getText(0))),0);
+	            			}
+	            			if(map.get(xwpfRun.getText(0)) instanceof  List) {
+	            				boolean first = true;
+	            				for (Member member : (List<Member>)map.get(xwpfRun.getText(0))) {
+	            					if(first) {
+	            						xwpfRun.setText(member.getText(),0);
+	            						first = false;
+	            					}else {
+		    	            			XmlCursor cursor = xwpfParagraph.getCTP().newCursor();
+		    	            			cursor.toNextSibling();
+		    	            			XWPFParagraph paragraph =  document.insertNewParagraph(cursor);
+		            					XWPFRun run = paragraph.createRun();
+		            					CTR ctr = (CTR)xwpfRun.getCTR().copy();
+		            					run.getCTR().set(ctr);
+	            						run.setText(member.getText(),0);
+	            						paragraph.addRun(run);
+	            						paragraph.setNumID(xwpfParagraph.getNumID());
+	            						paragraph.setSpacingAfter(xwpfParagraph.getSpacingAfter());
+	            						paragraph.setSpacingBefore(xwpfParagraph.getSpacingBefore());
+	            						paragraph.setSpacingLineRule(xwpfParagraph.getSpacingLineRule());
+//	            						paragraph.setSpacingAfterLines(xwpfParagraph.getSpacingAfterLines());
+//	            						paragraph.setSpacingBeforeLines(xwpfParagraph.getSpacingBeforeLines());
+//	            						paragraph.setFirstLineIndent(xwpfParagraph.getFirstLineIndent());
+//	            						paragraph.setIndentationLeft(xwpfParagraph.getIndentationLeft());
+//	            						paragraph.setIndentationHanging(xwpfParagraph.getIndentationHanging());
+	            					}
+								}
+	            			}
+	            		}
+//	            		j++;
+	                	if(i==8 && j ==1) {}
             			System.out.println(i +"." +j + " - " + xwpfRun.getText(0));
             	}
 			}

@@ -44,9 +44,10 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 	private int v_4;
 	private int v_4_4;
 	private String v_4_4_2;
-	private String v_4_5;
+	private float v_4_5;
 	private float v_4_6;
-	private String v_4_7;
+	private int v_4_7;
+	private String v_4_8;
 	
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar createdDate;
@@ -169,12 +170,15 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 	}
 
 
-	public String getV_4_5() {
+
+
+
+	public float getV_4_5() {
 		return v_4_5;
 	}
 
 
-	public void setV_4_5(String v_4_5) {
+	public void setV_4_5(float v_4_5) {
 		this.v_4_5 = v_4_5;
 	}
 
@@ -189,13 +193,23 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 	}
 
 
-	public String getV_4_7() {
+	public int getV_4_7() {
 		return v_4_7;
 	}
 
 
-	public void setV_4_7(String v_4_7) {
+	public void setV_4_7(int v_4_7) {
 		this.v_4_7 = v_4_7;
+	}
+
+
+	public String getV_4_8() {
+		return v_4_8;
+	}
+
+
+	public void setV_4_8(String v_4_8) {
+		this.v_4_8 = v_4_8;
 	}
 
 
@@ -253,9 +267,10 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 		this.v_4 =resp.getV_4();
 		this.v_4_4 = resp.getV_4_4();
 		this.v_4_4_2 = resp.getV_4_4_2();
-		this.setV_4_5(resp.getV_4_5());
+		this.setV_4_5(Float.valueOf(resp.getV_4_5()));
 		this.setV_4_6(Float.valueOf(resp.getV_4_6()));
 		this.setV_4_7(resp.getV_4_7());
+		this.setV_4_8(resp.getV_4_8());
 	}
 
 	public AssessmentResult() {
