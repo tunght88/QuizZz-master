@@ -12,13 +12,13 @@
 		$scope.loadNextPage = function(quizName, quizDescription) {
 		
 			if ($scope.pagination.morePagesAvailable) {
-				$http.get("/api/assessments?active=true&sort=id,desc&page=" + $scope.pagination.pageNumber)
+				$http.get("/api/assessments?sort=id,desc&page=" + $scope.pagination.pageNumber)
 					.then(
 						function(response) {
-							if ($scope.quizzes == undefined) {
-								$scope.quizzes = response.data.content;
+							if ($scope.assessments == undefined) {
+								$scope.assessments = response.data.content;
 							} else {
-								$scope.quizzes = $scope.quizzes.concat(response.data.content);
+								$scope.assessments = $scope.assessments.concat(response.data.content);
 							}
 							
 							$scope.pagination.morePagesAvailable = !response.data.last;

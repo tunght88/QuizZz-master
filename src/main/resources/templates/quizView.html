@@ -45,9 +45,9 @@
 <!-- 				        </div> -->
 			        </div>
 					<div ng-show="step==2">
-						<h2 class="">3.  Các tiêu chi đánh giá giải pháp</h2>
-						<h4 class="">Phải đánh dấu vào 1 trong 2 ô của từng tiêu chí dưới đây</h4>
-						<h3 class="">3.1.  Về tình trạng kỹ thuật hoặc tổ chức sản xuất hiện tại, chỉ rõ ưu khuyết điểm (mục A.1 trong Đơn):</h3> 
+						<h2 class="" style="font-weight: bold;">3.  Các tiêu chi đánh giá giải pháp</h2>
+						<h4 class="" style="font-style: italic;">Phải đánh dấu vào 1 trong 2 ô của từng tiêu chí dưới đây</h4>
+						<h3 class="" style="font-weight: bold;">3.1.  Về tình trạng kỹ thuật hoặc tổ chức sản xuất hiện tại, chỉ rõ ưu khuyết điểm (mục A.1 trong Đơn):</h3> 
 						<div>
 			        		<div class="radio">
 			        			<input type="radio" ng-model="result.v_3_1" ng-value="1" name="v_3_1">Thông tin đầy đủ, chính xác</input>
@@ -58,8 +58,8 @@
 		        		</div>
 						<span style="color:Red">{{msg_v_3_1}}</span>
 						
-						<h3 class="">3.2. Về nội dung giải pháp (mục A.2 trong Đơn)</h3>
-						<h4 class="">3.2.1. Mục đích của giải pháp, các điều kiện cần thiết:</h4> 
+						<h3 class="" style="font-weight: bold;">3.2. Về nội dung giải pháp (mục A.2 trong Đơn)</h3>
+						<h4 class="" style="font-weight: bold;">3.2.1. Mục đích của giải pháp, các điều kiện cần thiết:</h4> 
 						<div class="radio">
 		        			<input type="radio" ng-model="result.v_3_2_1" ng-value="1" name="v_3_2_1">Khả thi</input>
 	        			</div>
@@ -67,10 +67,10 @@
 		        			<input type="radio" ng-model="result.v_3_2_1" ng-value="0" name="v_3_2_1">Không khả thi</input>
 		        		</div>
 						<span style="color:Red">{{msg_v_3_2_1}}</span>
-						<h4 class="">(Nếu mục đích, điều kiện áp dụng giải pháp là Không khả thi thì không tiếp tục đánh giá các mục bên dưới và chuyển sang mục 4. Kết luận).</h4> 
+						<h4 class="" style="font-style: italic;">(Nếu mục đích, điều kiện áp dụng giải pháp là Không khả thi thì không tiếp tục đánh giá các mục bên dưới và chuyển sang mục 4. Kết luận).</h4> 
 					</div>
 					<div ng-show="step==3">
-						<h4 class="">3.2.2. Mô tả chi tiết bản chất của giải pháp</h4> 
+						<h4 class="" style="font-weight: bold;">3.2.2. Mô tả chi tiết bản chất của giải pháp</h4> 
 						<div class="radio">
 		        			<input type="radio" ng-model="result.v_3_2_2" ng-value="1" name="v_3_2_2">Đầy đủ, rõ ràng</input>
 	        			</div>
@@ -78,7 +78,7 @@
 		        			<input type="radio" ng-model="result.v_3_2_2" ng-value="0" name="v_3_2_2">Không đầy đủ / rõ ràng</input>
 		        		</div>
 						<span style="color:Red">{{msg_v_3_2_2}}</span>
-						<h4 class="">3.2.3. Các bước thực hiện </h4> 
+						<h4 class="" style="font-weight: bold;">3.2.3. Các bước thực hiện </h4> 
 						<div class="radio">
 		        			<input type="radio" ng-model="result.v_3_2_3" ng-value="1" name="v_3_2_3">Hợp lý</input>
 	        			</div>
@@ -86,7 +86,8 @@
 		        			<input type="radio" ng-model="result.v_3_2_3" ng-value="0" name="v_3_2_3">Không hợp lý</input>
 		        		</div>
 						<span style="color:Red">{{msg_v_3_2_3}}</span>
-						<h4 class="">3.2.4. Giải pháp có tính mới (nếu đáp ứng đồng thời tất cả các điều kiện sau đây: i) Không trùng với nội dung của giải pháp đã được công nhận sáng kiến; 
+						<h4 class="" style="font-weight: bold;">3.2.4. Giải pháp có tính mới
+						</h4><h4 style="font-style: italic;"> (nếu đáp ứng đồng thời tất cả các điều kiện sau đây: i) Không trùng với nội dung của giải pháp đã được công nhận sáng kiến; 
 						ii) Chưa bị bộc lộ công khai trong các văn bản, sách báo, tài liệu kỹ thuật đến mức căn cứ vào đó có thể thực hiện ngay được; iii) Không trùng với giải pháp của người khác đã được áp dụng hoặc áp dụng thử, 
 						hoặc đưa vào kế hoạch áp dụng, phổ biến hoặc chuẩn bị các điều kiện để áp dụng, phổ biến; iv) Chưa được quy định thành tiêu chuẩn, quy trình, quy phạm bắt buộc phải thực hiện)</h4> 
 						<div class="radio">
@@ -96,10 +97,10 @@
 		        			<input type="radio" ng-model="result.v_3_2_4" ng-value="0" name="v_3_2_4">Không</input>
 		        		</div>
 						<span style="color:Red">{{msg_v_3_2_4}}</span>
-						<h4 class="">(Nếu giải pháp được đánh giá là Không có tính mới thì không tiếp tục đánh giá mục 3.3, 3.4 bên dưới và chuyển sang mục 4. Kết luận).</h4> 
+						<h4 class="" style="font-style: italic;">(Nếu giải pháp được đánh giá là Không có tính mới thì không tiếp tục đánh giá mục 3.3, 3.4 bên dưới và chuyển sang mục 4. Kết luận).</h4> 
 					</div>
 					<div ng-show="step==4">
-						<h4 class="">3.3. Về quá trình áp dụng giải pháp (mục A.3 trong Đơn)</h4> 
+						<h4 class="" style="font-weight: bold;">3.3. Về quá trình áp dụng giải pháp (mục A.3 trong Đơn)</h4> 
 						<div class="radio">
 		        			<input type="radio" ng-model="result.v_3_3" ng-value="1" name="v_3_3">Đủ dài để đánh giá hiệu quả</input>
 	        			</div>
@@ -107,7 +108,7 @@
 		        			<input type="radio" ng-model="result.v_3_3" ng-value="0" name="v_3_3">Không đủ dài để đánh giá hiệu quả</input>
 		        		</div>
 						<span style="color:Red">{{msg_v_3_3}}</span>
-						<h4 class="">3.4. Hiệu quả thực tế thu được khi áp dụng giải pháp (mục A.4 trong Đơn)</h4> 
+						<h4 class="" style="font-weight: bold;">3.4. Hiệu quả thực tế thu được khi áp dụng giải pháp (mục A.4 trong Đơn)</h4> 
 						<div class="radio">
 		        			<input type="radio" ng-model="result.v_3_4" ng-value="1" name="v_3_4">Hiệu quả</input>
 	        			</div>
@@ -117,17 +118,17 @@
 						<span style="color:Red">{{msg_v_3_4}}</span>
 					</div>
 					<div ng-show="step==5">
-						<h2 class="">4.  Kết luận</h2>
-						<h3 class="">4.1.  Không công nhận sáng kiến nếu đánh giá ở trên thuộc một trong các trường hợp:</h3> 
-						<h4 class="">- Mục đích của giải pháp, các điều kiện cần thiết (mục 3.2.1) là Không khả thi, hoặc</h4>
-						<h4 class="">- Giải pháp không có tính mới (mục 3.2.4); hoặc</h4>
-						<h4 class="">- Quá trình áp dụng giải pháp (mục 3.3) là Không đủ dài để đánh giá hiệu quả, hoặc</h4>
-						<h4 class="">- Việc áp dụng  giải pháp (mục 3.4) là Không hiệu quả</h4>
-						<h3 class="">4.2.  Công nhận sáng kiến nhưng đề nghị hoàn thiện hồ sơ sáng kiến trước khi cấp Giấy chứng nhận sáng kiến nếu không có đánh giá thuộc một trong các trường hợp nêu tại mục 4.1 ở trên và có ít nhất một trong các tiêu chí tại mục 3.1, 3.2.2, 3.2.3 được đánh giá là Không.</h3>
-						<h4 class="">Yêu cầu hoàn thiện (ghi rõ phạm vi cần bổ sung trong đánh giá hiện trạng và / hoặc mô tả chi tiết bản chất giải pháp và / hoặc thay đổi các bước thực hiện giải pháp):</h4>
-						<h3 class="">4.3.  Công nhận sáng kiến nếu không thuộc các trường hợp nêu tại mục 4.1 và 4.2 </h3> 
+						<h2 class="" style="font-weight: bold;">4.  Kết luận</h2>
+						<h3 class="" style="font-weight: bold;">4.1.  Không công nhận sáng kiến nếu đánh giá ở trên thuộc một trong các trường hợp:</h3> 
+						<h4 class="" style="font-style: italic;">- Mục đích của giải pháp, các điều kiện cần thiết (mục 3.2.1) là Không khả thi, hoặc</h4>
+						<h4 class="" style="font-style: italic;">- Giải pháp không có tính mới (mục 3.2.4); hoặc</h4>
+						<h4 class="" style="font-style: italic;">- Quá trình áp dụng giải pháp (mục 3.3) là Không đủ dài để đánh giá hiệu quả, hoặc</h4>
+						<h4 class="" style="font-style: italic;">- Việc áp dụng  giải pháp (mục 3.4) là Không hiệu quả</h4>
+						<h3 class="" style="font-weight: bold;">4.2.  Công nhận sáng kiến nhưng đề nghị hoàn thiện hồ sơ sáng kiến trước khi cấp Giấy chứng nhận sáng kiến nếu không có đánh giá thuộc một trong các trường hợp nêu tại mục 4.1 ở trên và có ít nhất một trong các tiêu chí tại mục 3.1, 3.2.2, 3.2.3 được đánh giá là Không.</h3>
+						<h4 class="" style="font-style: italic;">Yêu cầu hoàn thiện (ghi rõ phạm vi cần bổ sung trong đánh giá hiện trạng và / hoặc mô tả chi tiết bản chất giải pháp và / hoặc thay đổi các bước thực hiện giải pháp):</h4>
+						<h3 class="" style="font-weight: bold;">4.3.  Công nhận sáng kiến nếu không thuộc các trường hợp nêu tại mục 4.1 và 4.2 </h3> 
 						
-						<h3 class="">Lựa chọn có/ không công nhận sáng kiến theo tiêu chí trên</h3> 
+						<h3 class="" style="font-style: italic;">Lựa chọn có/ không công nhận sáng kiến theo tiêu chí trên</h3> 
 						<div class="radio">
 		        			<input type="radio" ng-model="result.v_4" ng-value="0" name="v_4" ng-disabled="forceFail">4.1 Không công nhận sáng kiến nếu đánh giá ở trên thuộc một trong các trường hợp:</input>
 	        			</div>
@@ -140,8 +141,8 @@
 						<span style="color:Red">{{msg_v_4}}</span>
 					</div>
 					<div ng-show="step==6">
-						<h3 class="">4.4. Số tiền làm lợi (nếu Công nhận sáng kiến tại mục 4.2 hoặc 4.3)</h3> 
-						<h4 class="">Số tiền làm lợi trong năm đầu áp dụng sáng kiến là</h4>
+						<h3 class="" style="font-weight: bold;">4.4. Số tiền làm lợi (nếu Công nhận sáng kiến tại mục 4.2 hoặc 4.3)</h3> 
+						<h4 class="" style="font-style: italic;">Số tiền làm lợi trong năm đầu áp dụng sáng kiến là</h4>
 						<div class="radio">
 		        			<input type="radio" ng-model="result.v_4_4" ng-value="0" name="v_4_4">Không tính được (nếu mục B trong Đơn ghi là Không tính được hoặc người đánh giá cho rằng cách tính số tiền làm lợi ghi trong Đơn là không khả thi)</input>
 	        			</div>
@@ -155,21 +156,21 @@
 					
 					</div>
 					<div ng-show="step==7">
-						<h3 class="">Cơ sở cập nhật, bổ sung số liệu trong trường hợp cần tính lại:</h3> 
+						<h3 class="" style="font-style: italic;">Cơ sở cập nhật, bổ sung số liệu trong trường hợp cần tính lại:</h3> 
 				        <input  name="v_4_4_2" class="form-control" required="true"   ng-model="result.v_4_4_2"/>
 					</div>
 					<div ng-show="step==8">
-						<h3 class="">4.5. Đề xuất mức thù lao chung cho tác giả / đồng tác giả trong 03 năm (tổng mức thù lao tối đa nhỏ hơn 3 lần mức lương cơ sở, theo Điều 16 Quy chế quản lý hoạt động KHCN trong tập đoàn Điện lực Quốc gia Việt Nam).   </h3> 
+						<h3 class="" style="font-weight: bold;">4.5. Đề xuất mức thù lao chung cho tác giả / đồng tác giả trong 03 năm (tổng mức thù lao tối đa nhỏ hơn 3 lần mức lương cơ sở, theo Điều 16 Quy chế quản lý hoạt động KHCN trong tập đoàn Điện lực Quốc gia Việt Nam).   </h3> 
 				        <input  name="v_4_5" class="form-control" required="true"   ng-model="result.v_4_5"/>
 						<span style="color:Red">{{msg_v_4_5}}</span>
-						<h3 class="">4.6. Đề xuất mức thù lao chung cho những người tham gia tổ chức áp dụng sáng kiến lần đầu trong 03 năm   (mức tối đa 30% thù lao tác giả nêu tại mục 4.5, theo điều 40 Quy chế quản lý hoạt động KHCN trong tập đoàn Điện lực Quốc gia Việt Nam; tối thiểu 20% theo Điều 10 Điều lệ sáng kiến)</h3> 
+						<h3 class="" style="font-weight: bold;">4.6. Đề xuất mức thù lao chung cho những người tham gia tổ chức áp dụng sáng kiến lần đầu trong 03 năm   (mức tối đa 30% thù lao tác giả nêu tại mục 4.5, theo điều 40 Quy chế quản lý hoạt động KHCN trong tập đoàn Điện lực Quốc gia Việt Nam; tối thiểu 20% theo Điều 10 Điều lệ sáng kiến)</h3> 
 				        <input  name="v_4_6" class="form-control" required="true" type="text"   ng-model="result.v_4_6" min="20" max="30" ng-keypress="isNumberKey($event)"/>
 						<span style="color:Red">{{msg_v_4_6}}</span>
 						
 		        		<div class="checkbox">
-		        			<input type="checkbox" ng-model="result.v_4_7" ng-value="1" name="v_4_7">4.7. Đề xuất đăng ký công nhận sáng kiến cấp cao hơn (đối với cấp cơ sở tại Đơn vị và cấp Tổng công ty)</input>
+		        			<input type="checkbox" ng-model="result.v_4_7" ng-value="1" name="v_4_7"><b>4.7. Đề xuất đăng ký công nhận sáng kiến cấp cao hơn (đối với cấp cơ sở tại Đơn vị và cấp Tổng công ty)</b></input>
 		        		</div>
-    					<h3 class="">4.8. Ý kiến khác</h3> 
+    					<h3 class="" style="font-weight: bold;">4.8. Ý kiến khác</h3> 
 				        <input  name="v_4_8" class="form-control" required="true"   ng-model="result.v_4_8"/>
 						<span style="color:Red">{{msg_v_4_8}}</span>
 					</div>

@@ -11,33 +11,33 @@
 		<div ng-controller="HomeCtrl">
 			
 			<div>
-				<h1 th:text="#{label.home.welcome}">Welcome to QuizZz!</h1>
+				<h1 th:text="#{label.home.welcome}">Welcome to assessmentZz!</h1>
 				<br/>
 			</div>
 				
 			<table class="table table-hover" align="center">
 				<thead>
 					<tr>
-						<th th:text="#{label.home.maintable.headers.quiz}" width="70%">Quiz</th>
-						<th th:text="#{label.home.maintable.headers.questions}">Questions</th>
-						<th th:text="#{label.home.maintable.headers.times}">Times played</th>
-						<th th:text="#{label.home.maintable.headers.play}">Play!</th>
+						<th th:text="#{label.home.maintable.headers.council}" width="20%">Council</th>
+						<th th:text="#{label.home.maintable.headers.idea}" width="40%">Idea</th>
+						<th th:text="#{label.home.maintable.headers.level}" width="30%">Level</th>
+						<th th:text="#{label.home.maintable.headers.assessment}">Assess!</th>
 					</tr>
 				</thead>
 				<tbody>				
-					<tr ng-repeat="quiz in quizzes">
+					<tr ng-repeat="assessment in assessments">
 						<td>
-							<h4>{{quiz.name}}</h4>
-							<h5><small class="text-muted">{{quiz.description}}</small></h5>
+							<h4>{{assessment.name}}</h4>
+							<h5><small class="text-muted">{{assessment.description}}</small></h5>
 						</td>
 						<td>
-							<p>20</p>
+							<p>{{assessment.ideaName}}</p>
 						</td>
 						<td>
-							<p>5033</p>
+							<p>{{assessment.level}}</p>
 						</td>
 						<td>
-							<a href="/assessment/{{quiz.id}}" class="btn btn-primary">
+							<a href="/assessment/{{assessment.id}}" class="btn btn-primary">
 								<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
 							</a>
 						</td>
