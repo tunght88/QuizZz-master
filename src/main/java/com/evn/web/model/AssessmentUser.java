@@ -5,6 +5,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "assessment_user")
 public class AssessmentUser extends BaseModel {
@@ -14,6 +16,7 @@ public class AssessmentUser extends BaseModel {
 	private User user;
     @ManyToOne
     @JoinColumn(name = "assessment_id")
+    @JsonIgnore
 	private Assessment assessment;
 	public User getUser() {
 		return user;
