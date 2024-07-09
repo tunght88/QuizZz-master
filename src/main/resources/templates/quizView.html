@@ -149,6 +149,11 @@
 		        		<div class="radio">
 		        			<input type="radio" ng-model="result.v_4_4" ng-value="2" name="v_4_4">Tính được theo cách tính ghi trong Đơn nhưng cần tính lại</input>
 		        		</div>
+						<div ng-show="result.v_4_4==2">
+							<h3 class="" style="font-style: italic;">Cơ sở cập nhật, bổ sung số liệu trong trường hợp cần tính lại:</h3> 
+					        <input  name="v_4_4_2" class="form-control" required="true"   ng-model="result.v_4_4_2"/>
+							<span style="color:Red">{{msg_v_4_4_2}}</span>
+						</div>
 		        		<div class="radio">
 		        			<input type="radio" ng-model="result.v_4_4" ng-value="1" name="v_4_4">Tính được và đồng ý với số tiền làm lợi theo cách tính ghi trong Đơn</input>
 		        		</div>
@@ -156,10 +161,6 @@
 					
 					</div>
 					<div ng-show="step==7">
-						<h3 class="" style="font-style: italic;">Cơ sở cập nhật, bổ sung số liệu trong trường hợp cần tính lại:</h3> 
-				        <input  name="v_4_4_2" class="form-control" required="true"   ng-model="result.v_4_4_2"/>
-					</div>
-					<div ng-show="step==8">
 						<h3 class="" style="font-weight: bold;">4.5. Đề xuất mức thù lao chung cho tác giả / đồng tác giả trong 03 năm (tổng mức thù lao tối đa nhỏ hơn 3 lần mức lương cơ sở, theo Điều 16 Quy chế quản lý hoạt động KHCN trong tập đoàn Điện lực Quốc gia Việt Nam).   </h3> 
 				        <input  name="v_4_5" class="form-control" required="true"   ng-model="result.v_4_5"/>
 						<span style="color:Red">{{msg_v_4_5}}</span>
@@ -175,12 +176,13 @@
 						<span style="color:Red">{{msg_v_4_8}}</span>
 					</div>
 			     </form>
-				<div class="btn-grp" ng-show="step != 9" style="text-align: center;">
+				<div class="btn-grp" ng-show="step != 8" style="text-align: center;">
 					<button th:text="#{label.back}" class="btn btn-primary" type="submit" ng-click="back()"></button>
 					&nbsp;&nbsp;&nbsp;&nbsp;
-					<button th:text="#{label.next}" class="btn btn-primary" type="submit" ng-click="next()"></button>
+					<button ng-hide="step == 7" th:text="#{label.next}" class="btn btn-primary" type="submit" ng-click="next()"></button>
+					<button ng-show="step == 7" th:text="#{label.submit}" class="btn btn-primary" type="submit" ng-click="next()"></button>
 				</div>
-				<div ng-show="step==9">
+				<div ng-show="step==8">
 					<img alt="" src="/images/tk.png" width="100%"></img>
 				</div>
 			

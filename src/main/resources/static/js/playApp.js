@@ -75,7 +75,7 @@
 		$scope.next = function() {
 			$scope.forceFail=false;
 			$scope.validateSuccess = true;
-			if($scope.step == 9)
+			if($scope.step == 8)
 				return;
 			var nextStep;
 			switch($scope.step){
@@ -115,19 +115,16 @@
 					if(!$scope.validateSuccess)
 						return;
 					if($scope.result.v_4 == 0)
-						nextStep = 9;
+						nextStep = 8;
 					break;
 				case 6 : 
 					$scope.validateCheckbox('v_4_4');
+					if($scope.result.v_4_4 == 2)
+						$scope.validateText('v_4_4_2');
 					if(!$scope.validateSuccess)
 						return;
 					break;
 				case 7 : 
-					$scope.validateText('v_4_4_2');
-					if(!$scope.validateSuccess)
-						return;
-					break;
-				case 8 : 
 					$scope.validateText('v_4_5');
 					$scope.validateRate('v_4_6');
 					if(!$scope.validateSuccess)
@@ -137,15 +134,19 @@
 			}
 			$scope.lastStep = $scope.step;
 			
-			if(nextStep ==undefined && $scope.step < 9)
+			if(nextStep ==undefined && $scope.step < 8)
 				$scope.step++;
 			else
 				$scope.step = nextStep;
-			if($scope.step == 9)
+			if($scope.step == 8)
 				$scope.submitAnswers();
 		}
 
 		$scope.submitAnswers = function() {
+			if($scope.result.v_4_7 == 'true')
+				$scope.result.v_4_7 = 1;
+			else
+				$scope.result.v_4_7 = 0;
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', "/api/assessments/" + $scope.assessmentId + "/submit", true);
 			xhr.responseType = 'blob';
