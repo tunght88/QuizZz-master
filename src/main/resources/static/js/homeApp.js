@@ -1,6 +1,14 @@
 (function() {
 
-	var app = angular.module("homeApp", []);
+	var app = angular.module("homeApp", [])
+	.directive('myRepeatDirective', function() {
+	  return function(scope, element, attrs) {
+	    angular.element(element).css('color','blue');
+	    if (scope.$last){
+	      $('#tab').dataTable();	
+	    }
+	  };
+	});
 
 	var homeCtrl = function($scope, $http) {	  
 	
@@ -9,10 +17,11 @@
 			morePagesAvailable: true
 		};
 		
+
 		$scope.loadNextPage = function(quizName, quizDescription) {
 		
 			if ($scope.pagination.morePagesAvailable) {
-				$http.get("/api/assessments?sort=id,desc&page=" + $scope.pagination.pageNumber)
+				var x = $http.get("/api/assessments?sort=id,desc&page=" + $scope.pagination.pageNumber)
 					.then(
 						function(response) {
 							if ($scope.assessments == undefined) {
@@ -23,6 +32,7 @@
 							
 							$scope.pagination.morePagesAvailable = !response.data.last;
 							$scope.pagination.pageNumber++;
+								
 						}, 
 						function(reason) {
 							$scope.error = "Could not fetch the data.";
@@ -32,6 +42,7 @@
 		};
 	
 		$scope.loadNextPage();
+		
 		
 	};
 

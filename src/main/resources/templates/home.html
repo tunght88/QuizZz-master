@@ -15,7 +15,7 @@
 				<br/>
 			</div>
 				
-			<table class="table table-hover" align="center">
+			<table class="table table-hover" align="center" id="tab">
 				<thead>
 					<tr>
 						<th th:text="#{label.home.maintable.headers.council}" width="20%">Council</th>
@@ -25,16 +25,15 @@
 					</tr>
 				</thead>
 				<tbody>				
-					<tr ng-repeat="assessment in assessments">
+					<tr ng-repeat="assessment in assessments"  my-repeat-directive="">
 						<td>
-							<h4>{{assessment.name}}</h4>
-							<h5><small class="text-muted">{{assessment.description}}</small></h5>
+							{{assessment.name}}
 						</td>
 						<td>
-							<p>{{assessment.ideaName}}</p>
+							{{assessment.ideaName}}
 						</td>
 						<td>
-							<p>{{assessment.level}}</p>
+							{{assessment.level}}
 						</td>
 						<td>
 							<a href="/assessment/{{assessment.id}}" class="btn btn-primary">
@@ -56,6 +55,7 @@
 	<div th:replace="fragments/angular :: angular">...</div>
 	<script type="text/javascript" src="../js/homeApp.js"
 		        th:src="@{/js/homeApp.js}"></script>
+
 		        
 </body>
 </html>
