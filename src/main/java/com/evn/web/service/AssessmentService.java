@@ -1,5 +1,7 @@
 package com.evn.web.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -29,4 +31,5 @@ public interface AssessmentService {
 	Page<Assessment> search(String query, Pageable pageable);
 	Page<AssessmentView> getAssessmentsByUser(User user, Pageable pageable);
 	Page<AssessmentView> getAssessmentsCreateByUser(User user, Pageable pageable);
+	List<AssessmentResult> findAllByAssessmentId(Long assessmentId);
 }

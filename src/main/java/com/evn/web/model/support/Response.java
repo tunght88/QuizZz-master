@@ -13,7 +13,8 @@ public class Response {
 	private String v_4_2;
 	private Integer v_4_4;
 	private String v_4_4_2;
-	private String v_4_5;
+	private String v_4_5_1;
+	private String v_4_5_2;
 	private String v_4_6;
 	private Integer v_4_7;
 	private String v_4_8;
@@ -89,11 +90,18 @@ public class Response {
 	public void setV_4_4_2(String v_4_4_2) {
 		this.v_4_4_2 = v_4_4_2;
 	}
-	public String getV_4_5() {
-		return v_4_5;
+ 
+	public String getV_4_5_2() {
+		return v_4_5_2;
 	}
-	public void setV_4_5(String v_4_5) {
-		this.v_4_5 = v_4_5;
+	public void setV_4_5_2(String v_4_5_2) {
+		this.v_4_5_2 = v_4_5_2;
+	}
+	public String getV_4_5_1() {
+		return v_4_5_1;
+	}
+	public void setV_4_5_1(String v_4_5_1) {
+		this.v_4_5_1 = v_4_5_1;
 	}
 	public String getV_4_6() {
 		return v_4_6;

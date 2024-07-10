@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -103,7 +105,7 @@ public class AssessmentController {
 	@RequestMapping(value = "/{assessment_id}/submit", method = RequestMethod.POST)
 	@PreAuthorize("permitAll")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Resource>  playQuiz(@PathVariable long assessment_id, @RequestBody Response resp,@AuthenticationPrincipal AuthenticatedUser user) {
+	public ResponseEntity<Resource>  submitResult(@PathVariable long assessment_id, @RequestBody Response resp,@AuthenticationPrincipal AuthenticatedUser user) {
 		Assessment assessment = assessmentService.find(assessment_id);
 		AssessmentResult result = new AssessmentResult(resp);
 		result.setCreatedDate(Calendar.getInstance());
@@ -179,7 +181,7 @@ public class AssessmentController {
             			System.out.println(i +"." +j + " - " + xwpfRun.getText(0));
             	}
 			}
-            File outFile = new File("D:\\BM02.docx");
+            File outFile = new File("D:\\BM02_" + Calendar.getInstance().getTimeInMillis() + ".docx");
             os = new FileOutputStream(outFile);
             document.write(os);
             os.close();
@@ -201,6 +203,139 @@ public class AssessmentController {
 		}
         String contentType = "application/octet-stream";
         String headerValue = "attachment; filename=\"BM02.docx\"";
+         
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
+                .body(resource);   
+	}
+
+	@RequestMapping(value = "/{assessment_id}/export", method = RequestMethod.POST)
+	@PreAuthorize("permitAll")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<Resource>  export(@PathVariable long assessment_id,@AuthenticationPrincipal AuthenticatedUser user) {
+		Assessment assessment = assessmentService.find(assessment_id);
+		List<AssessmentResult> results  = assessmentService.findAllByAssessmentId(assessment_id);
+		XWPFDocument document = null;
+		File file = null;
+		OutputStream os = null;
+		Resource resource = null;
+		Map<String,Object> map = new HashMap<>();
+		Integer total = results.size();
+		Integer countFail= 0;
+		Integer countSuccess = 0;
+		Float s_4_5_1 =0f;
+		Integer c_4_5_1= 0;
+		Float s_4_5_2 =0f;
+		Integer c_4_5_2= 0;
+		Float s_4_6 =0f;
+		Integer c_4_6 =0;
+		Integer countUpper = 0;
+		final DecimalFormat df = new DecimalFormat("0.##");
+		for (AssessmentResult result : results) {
+			if(result.getV_4() == 0)
+				countFail ++;
+			else 
+				countSuccess++;
+			if(result.getV_4_7() != null && result.getV_4_7() == 1)
+				countUpper ++;
+			if(result.getV_4_5_1() != null) {
+				c_4_5_1 ++;
+				s_4_5_1 +=result.getV_4_5_1();
+			}
+			if(result.getV_4_5_2() != null) {
+				c_4_5_2 ++;
+				s_4_5_2 +=result.getV_4_5_2();
+			}
+			if(result.getV_4_6() != null) {
+				c_4_6 ++;
+				s_4_6 +=result.getV_4_6();
+			}
+		}
+		map.put("{total}", total);
+		map.put("{fail}", countFail);
+		map.put("{success}", countSuccess);
+		map.put("{upper}", countUpper);
+		map.put("{v_4_5_1}", c_4_5_1 > 0 ? df.format(s_4_5_1/c_4_5_1) : "");
+		map.put("{v_4_5_2}", c_4_5_2 > 0 ? df.format(s_4_5_2/c_4_5_2) : "");
+		map.put("{v_4_6}", c_4_6 > 0 ? df.format(s_4_6/c_4_6) : "");
+		map.put("{ideaName}", assessment.getIdea().getText());
+		map.put("{level}", assessment.getLevel().getText());
+		map.put("{member}", assessment.getIdea().getMembers());
+		map.put("{day}", Calendar.getInstance().get(Calendar.DAY_OF_MONTH) +"");
+		map.put("{month}", Calendar.getInstance().get(Calendar.MONTH) +"");
+		map.put("{year}", Calendar.getInstance().get(Calendar.YEAR) +"");
+		try {
+			file = ResourceUtils.getFile("classpath:static/word/BM03.docx");
+			document = new XWPFDocument(new FileInputStream(file));
+            List<XWPFParagraph> paragraphs = document.getParagraphs();
+            for (int i = 0; i < paragraphs.size(); i++) {
+            	XWPFParagraph xwpfParagraph = paragraphs.get(i);
+	            	List<XWPFRun> runs = xwpfParagraph.getRuns();
+	            	
+	            	for (int j = 0; j < runs.size(); j++) {
+	            		XWPFRun xwpfRun = runs.get(j);
+	            		//text
+	            		if(map.containsKey(xwpfRun.getText(0))) {
+	            			if(map.get(xwpfRun.getText(0).trim()) == null) {
+	            				xwpfRun.setText("",0);
+	            			}
+	            			if(map.get(xwpfRun.getText(0)) instanceof  String){
+	            				xwpfRun.setText(String.valueOf(map.get(xwpfRun.getText(0))),0);
+	            			}
+	            			if(map.get(xwpfRun.getText(0)) instanceof  Integer){
+	            				xwpfRun.setText(String.valueOf(map.get(xwpfRun.getText(0))),0);
+	            			}
+	            			if(map.get(xwpfRun.getText(0)) instanceof  List) {
+	            				boolean first = true;
+	            				for (Member member : (List<Member>)map.get(xwpfRun.getText(0))) {
+	            					if(first) {
+	            						xwpfRun.setText(member.getText(),0);
+	            						first = false;
+	            					}else {
+		    	            			XmlCursor cursor = xwpfParagraph.getCTP().newCursor();
+		    	            			cursor.toNextSibling();
+		    	            			XWPFParagraph paragraph =  document.insertNewParagraph(cursor);
+		            					XWPFRun run = paragraph.createRun();
+		            					CTR ctr = (CTR)xwpfRun.getCTR().copy();
+		            					run.getCTR().set(ctr);
+	            						run.setText(member.getText(),0);
+	            						paragraph.addRun(run);
+	            						paragraph.setNumID(xwpfParagraph.getNumID());
+	            						paragraph.setSpacingAfter(xwpfParagraph.getSpacingAfter());
+	            						paragraph.setSpacingBefore(xwpfParagraph.getSpacingBefore());
+	            						paragraph.setSpacingLineRule(xwpfParagraph.getSpacingLineRule());
+	            					}
+								}
+	            			}
+	            		}
+	            		if(i == 33 && j == 2)
+	            			System.out.println();
+            			System.out.println(i +"." +j + " - " + xwpfRun.getText(0));
+            	}
+			}
+            File outFile = new File("D:\\BM03_" + Calendar.getInstance().getTimeInMillis() + ".docx");
+            os = new FileOutputStream(outFile);
+            document.write(os);
+            os.close();
+            resource = new InputStreamResource(new FileInputStream(outFile));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(document != null)
+				try {
+					document.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+        String contentType = "application/octet-stream";
+        String headerValue = "attachment; filename=\"BM03.docx\"";
          
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))

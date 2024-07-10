@@ -162,8 +162,16 @@
 					</div>
 					<div ng-show="step==7">
 						<h3 class="" style="font-weight: bold;">4.5. Đề xuất mức thù lao chung cho tác giả / đồng tác giả trong 03 năm (tổng mức thù lao tối đa nhỏ hơn 3 lần mức lương cơ sở, theo Điều 16 Quy chế quản lý hoạt động KHCN trong tập đoàn Điện lực Quốc gia Việt Nam).   </h3> 
-				        <input  name="v_4_5" class="form-control" required="true"   ng-model="result.v_4_5"/>
-						<span style="color:Red">{{msg_v_4_5}}</span>
+				        <div ng-hide="result.v_4_4==0" style="display: flex; justify-content: flex-start;">
+							<h4 class="" style="font-style: italic;">Tỷ lệ: &nbsp;</h4>
+					        <input  name="v_4_5_1" class="form-control" required="true"   ng-model="result.v_4_5_1" style="width: 80%"/>
+					    </div>
+						<span style="color:Red">{{msg_v_4_5_1}}</span>
+					    <div ng-show="result.v_4_4==0" style="display: flex; justify-content: flex-start;">
+					   		<h4 class="" style="font-style: italic;">Số lần: &nbsp;</h4>
+					        <input  name="v_4_5_2" class="form-control" required="true"   ng-model="result.v_4_5_2" style="width: 80%"/>
+				        </div>
+						<span style="color:Red">{{msg_v_4_5_2}}</span>
 						<h3 class="" style="font-weight: bold;">4.6. Đề xuất mức thù lao chung cho những người tham gia tổ chức áp dụng sáng kiến lần đầu trong 03 năm   (mức tối đa 30% thù lao tác giả nêu tại mục 4.5, theo điều 40 Quy chế quản lý hoạt động KHCN trong tập đoàn Điện lực Quốc gia Việt Nam; tối thiểu 20% theo Điều 10 Điều lệ sáng kiến)</h3> 
 				        <input  name="v_4_6" class="form-control" required="true" type="text"   ng-model="result.v_4_6" min="20" max="30" ng-keypress="isNumberKey($event)"/>
 						<span style="color:Red">{{msg_v_4_6}}</span>

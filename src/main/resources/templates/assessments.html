@@ -47,9 +47,9 @@
 							{{assessment.countUser}}
 						</td>
 						<td>
-							<a href="/assessment/{{assessment.id}}/export" class="btn btn-xs btn-primary">
+							<button class="btn btn-primary btn-xs" type="button" ng-click="exportDoc03(assessment.id)">
 								<span class="glyphicon glyphicon-play fa-xs" aria-hidden="true"></span>
-							</a>
+								</button>
 						</td>
 					</tr>
 				</tbody>
@@ -66,6 +66,8 @@
 	<div th:replace="fragments/angular :: angular">...</div>
 	<script type="text/javascript" src="../js/assessmentsApp.js"
 		        th:src="@{/js/assessmentsApp.js}"></script>
+	<script type="text/javascript" src="../js/FileSaver.js"
+		        th:src="@{/js/FileSaver.js}"></script>
 
 		        
 </body>

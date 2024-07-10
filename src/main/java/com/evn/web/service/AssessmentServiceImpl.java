@@ -104,7 +104,7 @@ public class AssessmentServiceImpl implements AssessmentService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	public Page<AssessmentView> getAssessmentsByUser(User user, Pageable pageable){
 		String whereClause = "from assessment t1, assessment_user t2, idea t3, level t4, council t5 where t1.id = t2.assessment_id and t1.idea_id = t3.id and t1.level_id = t4.id and t1.council_id = t5.id and t2.user_id = ? and t1.active = 1";
 		String countSql = "select count(*) " + whereClause;
@@ -139,4 +139,9 @@ public class AssessmentServiceImpl implements AssessmentService {
 //	public Page<Assessment> getAssessmentsByUser(User user, Pageable pageable){
 //		return assessmentRepository.findByUser(user.getId(),pageable);
 //	}
+
+	@Override
+	public List<AssessmentResult> findAllByAssessmentId(Long assessmentId) {
+		return assessmentResultRepository.findAllByAssessmentId(assessmentId);
+	}
 }

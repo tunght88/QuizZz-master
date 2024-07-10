@@ -58,14 +58,14 @@
 			}else
 				model.assign($scope, '');
 		}
-		$scope.validateRate = function(field){
+		$scope.validateRate = function(field,min, max){
 			var model = $parse('msg_' + field);
 			var val = $scope.$eval('result.' + field);
 			if(val == undefined){
 				model.assign($scope, 'Please input value');
 				$scope.validateSuccess = false;
-			}else if(Number(val) > 30 || Number(val) < 20){
-				model.assign($scope, 'Please input value between 20 and 30');
+			}else if(Number(val) > max || Number(val) < min){
+				model.assign($scope, 'Please input value between '+ min + ' and '+ max +'');
 				$scope.validateSuccess = false;
 			}else
 				model.assign($scope, '');
@@ -123,8 +123,11 @@
 						return;
 					break;
 				case 7 : 
-					$scope.validateText('v_4_5');
-					$scope.validateRate('v_4_6');
+					if($scope.result.v_4_4 == 0)
+						$scope.validateRate('v_4_5_2', 0,3);
+					else
+						$scope.validateRate('v_4_5_1',0,100);
+					$scope.validateRate('v_4_6',20,30);
 					if(!$scope.validateSuccess)
 						return;
 					break;
@@ -154,7 +157,6 @@
 			    saveAs(blob,"BM02.docx")
 			}
 			xhr.send(JSON.stringify($scope.result));
-//			xhr.send('{"v_3_1":1,"v_3_2_1":1,"v_3_2_2":1,"v_3_2_3":1,"v_3_2_4":1,"v_3_3":1,"v_3_4":1,"v_4":1,"v_4_4":1,"v_4_4_2":"435435","v_4_5":"33","v_4_6":"22","v_4_7":1,"v_4_8":"xxx"}');
 		}
 	
 		$scope.initialize();	
