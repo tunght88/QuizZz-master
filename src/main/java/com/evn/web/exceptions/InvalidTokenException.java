@@ -1,6 +1,6 @@
 package com.evn.web.exceptions;
 
-public class InvalidTokenException extends QuizZzException {
+public class InvalidTokenException extends WebException {
 
 	private static final long serialVersionUID = 1L;
 

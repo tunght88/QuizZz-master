@@ -10,6 +10,10 @@ public class AssessmentView {
 	private String ideaName;
 	private String level;
 	private String councilName;
+	private int countResult;
+	private int countUser;
+	
+	
 	
 	public long getId() {
 		return id;
@@ -46,6 +50,18 @@ public class AssessmentView {
 	}
 	public void setCouncilName(String councilName) {
 		this.councilName = councilName;
+	}
+	public int getCountResult() {
+		return countResult;
+	}
+	public void setCountResult(int countResult) {
+		this.countResult = countResult;
+	}
+	public int getCountUser() {
+		return countUser;
+	}
+	public void setCountUser(int countUser) {
+		this.countUser = countUser;
 	}
 	
 	

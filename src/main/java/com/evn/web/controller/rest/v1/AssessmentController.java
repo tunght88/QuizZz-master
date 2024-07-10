@@ -63,14 +63,24 @@ public class AssessmentController {
 	private AssessmentService assessmentService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	@PreAuthorize("permitAll")
+	@PreAuthorize("isAuthenticated()")
 	@ResponseStatus(HttpStatus.OK)
 	public Page<AssessmentView> findAll(Pageable pageable
 			,@AuthenticationPrincipal AuthenticatedUser user) {
-		
-			return assessmentService.getAssessmentsByUser(user.getUser(), pageable);
+		if(user == null)
+			return null;
+		return assessmentService.getAssessmentsByUser(user.getUser(), pageable);
 	}
 
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@PreAuthorize("isAuthenticated()")
+	@ResponseStatus(HttpStatus.OK)
+	public Page<AssessmentView> findAll2(Pageable pageable
+			,@AuthenticationPrincipal AuthenticatedUser user) {
+		if(user == null)
+			return null;
+		return assessmentService.getAssessmentsCreateByUser(user.getUser(), pageable);
+	}
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	@PreAuthorize("permitAll")
 	@ResponseStatus(HttpStatus.OK)

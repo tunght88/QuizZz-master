@@ -28,5 +28,5 @@ public interface AssessmentService {
 
 	Page<Assessment> search(String query, Pageable pageable);
 	Page<AssessmentView> getAssessmentsByUser(User user, Pageable pageable);
-
+	Page<AssessmentView> getAssessmentsCreateByUser(User user, Pageable pageable);
 }

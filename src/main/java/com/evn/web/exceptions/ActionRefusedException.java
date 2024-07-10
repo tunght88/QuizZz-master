@@ -1,6 +1,6 @@
 package com.evn.web.exceptions;
 
-public class ActionRefusedException extends QuizZzException {
+public class ActionRefusedException extends WebException {
 
 	private static final long serialVersionUID = 1L;
 

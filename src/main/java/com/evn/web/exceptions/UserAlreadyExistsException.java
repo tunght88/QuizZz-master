@@ -1,6 +1,6 @@
 package com.evn.web.exceptions;
 
-public class UserAlreadyExistsException extends QuizZzException {
+public class UserAlreadyExistsException extends WebException {
 
 	private static final long serialVersionUID = 1L;
 

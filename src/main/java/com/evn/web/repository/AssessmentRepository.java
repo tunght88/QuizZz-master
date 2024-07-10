@@ -3,11 +3,9 @@ package com.evn.web.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.evn.web.model.Assessment;
-import com.evn.web.model.Quiz;
 
 @Repository("assessmentRepository")
 public interface AssessmentRepository extends JpaRepository<Assessment, Long> {

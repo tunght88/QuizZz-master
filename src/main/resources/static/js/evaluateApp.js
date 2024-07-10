@@ -9,12 +9,10 @@
 		var successStep = ['1', '2.1', '2.2'];
 		var answers = [];
 		
-//		$scope.x = ${user.username};
 		$scope.step = 1;
 	    $scope.date = new Date();
 		$scope.validateSuccess = true;
 		$scope.lastStep = 1;
-//	    $scope.result ={};
 		$scope.initialize = function() {
 			if ($scope.assessmentId == 0)
 				return;

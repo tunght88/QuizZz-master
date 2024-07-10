@@ -5,8 +5,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,9 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.evn.web.controller.utils.RestVerifier;
 import com.evn.web.model.AuthenticatedUser;
-import com.evn.web.model.Quiz;
 import com.evn.web.model.User;
-import com.evn.web.service.QuizService;
 import com.evn.web.service.UserService;
 import com.evn.web.service.usermanagement.RegistrationService;
 import com.evn.web.service.usermanagement.UserManagementService;
@@ -43,8 +39,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	private QuizService quizService;
 
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	@PreAuthorize("permitAll")
@@ -81,25 +75,6 @@ public class UserController {
 		userService.delete(user_id);
 	}
 
-	@RequestMapping(value = "/{user_id}/quizzes", method = RequestMethod.GET)
-	@PreAuthorize("permitAll")
-	@ResponseStatus(HttpStatus.OK)
-	public Page<Quiz> getQuizzesByUser(Pageable pageable, @PathVariable Long user_id) {
-		logger.debug("Requested page " + pageable.getPageNumber() + " from user " + user_id);
-		
-		User user = userService.find(user_id);
-		return quizService.findQuizzesByUser(user, pageable);
-	}
-	
-	@RequestMapping(value = "/myQuizzes", method = RequestMethod.GET)
-	@PreAuthorize("isAuthenticated()")
-	@ResponseStatus(HttpStatus.OK)
-	public Page<Quiz> getQuizzesByCurrentUser(@AuthenticationPrincipal AuthenticatedUser authenticatedUser,
-			Pageable pageable) {
-		logger.debug("Requested page " + pageable.getPageNumber() + " from user " + authenticatedUser.getUsername());
-		
-		return getQuizzesByUser(pageable, authenticatedUser.getId());
-	}
 	
 	@RequestMapping(value = "/login")
 	@PreAuthorize("isAuthenticated()")

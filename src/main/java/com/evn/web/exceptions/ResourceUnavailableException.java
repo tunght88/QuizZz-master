@@ -1,6 +1,6 @@
 package com.evn.web.exceptions;
 
-public class ResourceUnavailableException extends QuizZzException {
+public class ResourceUnavailableException extends WebException {
 
 	private static final long serialVersionUID = 1L;
 

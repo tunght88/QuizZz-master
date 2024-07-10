@@ -5,13 +5,13 @@
 	    font-size: 20px;
 	}
 </head>
-<body ng-app="homeApp">
+<body ng-app="assessmentsApp">
 
 	<div th:replace="fragments/header :: header">...</div>
 
 	<div class="container">
 
-		<div ng-controller="HomeCtrl">
+		<div ng-controller="AssessmentsCtrl">
 			
 			<div>
 				<h1 th:text="#{label.home.welcome}">Welcome to assessmentZz!</h1>
@@ -24,7 +24,9 @@
 						<th th:text="#{label.home.maintable.headers.council}" width="20%">Council</th>
 						<th th:text="#{label.home.maintable.headers.idea}" width="40%">Idea</th>
 						<th th:text="#{label.home.maintable.headers.level}" width="30%">Level</th>
-						<th th:text="#{label.home.maintable.headers.assessment}">Assess!</th>
+						<th th:text="#{label.home.maintable.headers.countResult}">Result!</th>
+						<th th:text="#{label.home.maintable.headers.countUser}">Total User!</th>
+						<th th:text="#{label.home.maintable.headers.export}">Export</th>
 					</tr>
 				</thead>
 				<tbody>				
@@ -39,7 +41,13 @@
 							{{assessment.level}}
 						</td>
 						<td>
-							<a href="/assessment/{{assessment.id}}" class="btn btn-xs btn-primary">
+							{{assessment.countResult}}
+						</td>
+						<td>
+							{{assessment.countUser}}
+						</td>
+						<td>
+							<a href="/assessment/{{assessment.id}}/export" class="btn btn-xs btn-primary">
 								<span class="glyphicon glyphicon-play fa-xs" aria-hidden="true"></span>
 							</a>
 						</td>
@@ -56,8 +64,8 @@
 	</div>
 	
 	<div th:replace="fragments/angular :: angular">...</div>
-	<script type="text/javascript" src="../js/homeApp.js"
-		        th:src="@{/js/homeApp.js}"></script>
+	<script type="text/javascript" src="../js/assessmentsApp.js"
+		        th:src="@{/js/assessmentsApp.js}"></script>
 
 		        
 </body>

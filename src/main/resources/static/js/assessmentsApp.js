@@ -1,6 +1,6 @@
 (function() {
 
-	var app = angular.module("homeApp", [])
+	var app = angular.module("assessmentsApp", [])
 	.directive('myRepeatDirective', function() {
 	  return function(scope, element, attrs) {
 	    angular.element(element).css('color','blue');
@@ -17,7 +17,7 @@
 	  };
 	});
 
-	var homeCtrl = function($scope, $http) {	  
+	var assessmentsCtrl = function($scope, $http) {	  
 	
 		$scope.pagination = {
 			pageNumber: 0,
@@ -28,7 +28,7 @@
 		$scope.loadNextPage = function() {
 		
 			if ($scope.pagination.morePagesAvailable) {
-				var x = $http.get("/api/assessments?sort=id,desc&page=" + $scope.pagination.pageNumber)
+				var x = $http.get("/api/assessments/list?sort=id,desc&page=" + $scope.pagination.pageNumber)
 					.then(
 						function(response) {
 							if ($scope.assessments == undefined) {
@@ -53,6 +53,6 @@
 		
 	};
 
-	app.controller("HomeCtrl", ["$scope", "$http", homeCtrl]);
+	app.controller("AssessmentsCtrl", ["$scope", "$http", assessmentsCtrl]);
 
 }());

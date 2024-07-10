@@ -1,6 +1,6 @@
 package com.evn.web.exceptions;
 
-public class ModelVerificationException extends QuizZzException {
+public class ModelVerificationException extends WebException {
 
 	private static final long serialVersionUID = 1L;
 

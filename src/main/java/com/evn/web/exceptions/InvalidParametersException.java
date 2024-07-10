@@ -1,6 +1,6 @@
 package com.evn.web.exceptions;
 
-public class InvalidParametersException extends QuizZzException {
+public class InvalidParametersException extends WebException {
 
 	private static final long serialVersionUID = 1L;
 
