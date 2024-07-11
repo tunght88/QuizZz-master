@@ -1,6 +1,7 @@
 package com.evn.web.model.support;
 
 public class Response {
+	private Integer id;
 	private String v_2_1;
 	private Integer v_3_1;
 	private Integer v_3_2_1;
@@ -18,6 +19,14 @@ public class Response {
 	private String v_4_6;
 	private Integer v_4_7;
 	private String v_4_8;
+	
+
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getV_2_1() {
 		return v_2_1;
 	}

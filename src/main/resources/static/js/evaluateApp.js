@@ -17,10 +17,10 @@
 			if ($scope.assessmentId == 0)
 				return;
 
-			$http.get("/api/assessments/" + $scope.assessmentId)
+			$http.get("/api/assessments/" + $scope.assessmentId + "/last-result")
 				.then(
 					function(response) {
-						$scope.assessment = response.data;
+						$scope.result = response.data;
 					}, 
 					function(reason) {
 						$scope.error = "Could not fetch the data.";

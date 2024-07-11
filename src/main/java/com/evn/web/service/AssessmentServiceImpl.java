@@ -144,4 +144,14 @@ public class AssessmentServiceImpl implements AssessmentService {
 	public List<AssessmentResult> findAllByAssessmentId(Long assessmentId) {
 		return assessmentResultRepository.findAllByAssessmentId(assessmentId);
 	}
+
+	@Override
+	public AssessmentResult findActiveResult(Long assessmentId, Long userId) {
+		return assessmentResultRepository.findByAssessmentIdAndUserIdAndActive(assessmentId, userId,true);
+	}
+
+	@Override
+	public AssessmentResult findAssessmentResultById(Long resultId) {
+		return assessmentResultRepository.findOne(resultId);
+	}
 }

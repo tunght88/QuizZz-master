@@ -294,6 +294,7 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 		this.setV_4_6(resp.getV_4_6() == null? null : Float.valueOf(resp.getV_4_6()));
 		this.setV_4_7(resp.getV_4_7());
 		this.setV_4_8(resp.getV_4_8());
+		this.setActive(true);
 	}
 
 	public AssessmentResult() {

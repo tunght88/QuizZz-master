@@ -10,4 +10,6 @@ import com.evn.web.model.AssessmentResult;
 @Repository("assessmentResultRepository")
 public interface AssessmentResultRepository extends JpaRepository<AssessmentResult, Long> {
 	List<AssessmentResult> findAllByAssessmentId(Long assessmentId);
+	List<AssessmentResult> findAllByAssessmentIdAndUserId(Long assessmentId, Long userId);
+	AssessmentResult findByAssessmentIdAndUserIdAndActive(Long assessmentId, Long userId, Boolean active);
 }

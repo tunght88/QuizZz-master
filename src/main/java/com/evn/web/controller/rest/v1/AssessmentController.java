@@ -101,12 +101,25 @@ public class AssessmentController {
 		return assessmentService.find(assessment_id);
 	}
 
+	@RequestMapping(value = "/{assessment_id}/last-result", method = RequestMethod.GET)
+	@PreAuthorize("permitAll")
+	@ResponseStatus(HttpStatus.OK)
+	public AssessmentResult findAssessmentResult(@PathVariable Long assessment_id,@AuthenticationPrincipal AuthenticatedUser user) {
+
+		return assessmentService.findActiveResult(assessment_id, user.getId());
+	}
 
 	@RequestMapping(value = "/{assessment_id}/submit", method = RequestMethod.POST)
 	@PreAuthorize("permitAll")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Resource>  submitResult(@PathVariable long assessment_id, @RequestBody Response resp,@AuthenticationPrincipal AuthenticatedUser user) {
 		Assessment assessment = assessmentService.find(assessment_id);
+		if(resp.getId() != null) {
+			AssessmentResult old = assessmentService.findAssessmentResultById(Long.valueOf(resp.getId()));
+			old.setActive(false);
+			assessmentService.save(old);
+		}
+			
 		AssessmentResult result = new AssessmentResult(resp);
 		result.setCreatedDate(Calendar.getInstance());
 		result.setAssessment(assessment);

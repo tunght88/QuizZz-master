@@ -32,4 +32,6 @@ public interface AssessmentService {
 	Page<AssessmentView> getAssessmentsByUser(User user, Pageable pageable);
 	Page<AssessmentView> getAssessmentsCreateByUser(User user, Pageable pageable);
 	List<AssessmentResult> findAllByAssessmentId(Long assessmentId);
+	AssessmentResult findActiveResult(Long assessmentId, Long userId);
+	AssessmentResult findAssessmentResultById(Long resultId);
 }
