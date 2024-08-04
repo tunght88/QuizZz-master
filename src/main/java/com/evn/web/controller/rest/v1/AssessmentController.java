@@ -44,6 +44,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.evn.web.controller.utils.SendEmailSSL;
 import com.evn.web.controller.utils.Utils;
 import com.evn.web.model.Assessment;
 import com.evn.web.model.AssessmentResult;
@@ -112,7 +113,7 @@ public class AssessmentController {
 	@RequestMapping(value = "/{assessment_id}/submit", method = RequestMethod.POST)
 	@PreAuthorize("permitAll")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Resource>  submitResult(@PathVariable long assessment_id, @RequestBody Response resp,@AuthenticationPrincipal AuthenticatedUser user) {
+	public ResponseEntity  submitResult(@PathVariable long assessment_id, @RequestBody Response resp,@AuthenticationPrincipal AuthenticatedUser user) {
 		Assessment assessment = assessmentService.find(assessment_id);
 		if(resp.getId() != null) {
 			AssessmentResult old = assessmentService.findAssessmentResultById(Long.valueOf(resp.getId()));
@@ -127,106 +128,18 @@ public class AssessmentController {
 			result = assessmentService.save(result,user.getUser());
 		else
 			result = assessmentService.save(result);
-		XWPFDocument document = null;
-		File file = null;
-		OutputStream os = null;
-		Resource resource = null;
-		Map<String,Object> map = Utils.getMap(resp);
-		map.put("{ideaName}", assessment.getIdea().getText());
-		map.put("{username}", result.getV_2_1());
-		map.put("{level}", assessment.getLevel().getText());
-		map.put("{member}", assessment.getIdea().getMembers());
-		map.put("{day}", result.getCreatedDate().get(Calendar.DAY_OF_MONTH) +"");
-		map.put("{month}", result.getCreatedDate().get(Calendar.MONTH) +"");
-		map.put("{year}", result.getCreatedDate().get(Calendar.YEAR) +"");
-		try {
-			file = ResourceUtils.getFile("classpath:static/word/BM02.docx");
-			document = new XWPFDocument(new FileInputStream(file));
-            List<XWPFParagraph> paragraphs = document.getParagraphs();
-    		CTOnOff on =CTOnOff.Factory.newInstance();
-    		on.setVal(STOnOff1.ON);
-    		CTOnOff off =CTOnOff.Factory.newInstance();
-    		off.setVal(STOnOff1.OFF);
-            for (int i = 0; i < paragraphs.size(); i++) {
-            	XWPFParagraph xwpfParagraph = paragraphs.get(i);
-	            	List<XWPFRun> runs = xwpfParagraph.getRuns();
-	            	
-	            	for (int j = 0; j < runs.size(); j++) {
-	            		XWPFRun xwpfRun = runs.get(j);
-	            		//check
-	            		if(xwpfRun.getCTR().getFldCharList().size() >0 && xwpfRun.getCTR().getFldCharList().get(0).getFfData() != null && xwpfRun.getCTR().getFldCharList().get(0).getFfData().getCheckBoxList().size() > 0 && xwpfRun.getCTR().getFldCharList().get(0).getFfData().getNameList().size() > 0) {
-            				String name = xwpfRun.getCTR().getFldCharList().get(0).getFfData().getNameList().get(0).getVal();
-	            			if(map.containsKey(name)) {
-		                		xwpfRun.getCTR().getFldCharList().get(0).getFfData().getCheckBoxList().get(0).setChecked(on);
-	            			}
-	            		}
-	            		//text
-	            		if(map.containsKey(xwpfRun.getText(0))) {
-	            			if(map.get(xwpfRun.getText(0).trim()) == null) {
-	            				xwpfRun.setText("",0);
-	            			}
-	            			if(map.get(xwpfRun.getText(0)) instanceof  String){
-	            				xwpfRun.setText(String.valueOf(map.get(xwpfRun.getText(0))),0);
-	            			}
-	            			if(map.get(xwpfRun.getText(0)) instanceof  List) {
-	            				boolean first = true;
-	            				for (Member member : (List<Member>)map.get(xwpfRun.getText(0))) {
-	            					if(first) {
-	            						xwpfRun.setText(member.getText(),0);
-	            						first = false;
-	            					}else {
-		    	            			XmlCursor cursor = xwpfParagraph.getCTP().newCursor();
-		    	            			cursor.toNextSibling();
-		    	            			XWPFParagraph paragraph =  document.insertNewParagraph(cursor);
-		            					XWPFRun run = paragraph.createRun();
-		            					CTR ctr = (CTR)xwpfRun.getCTR().copy();
-		            					run.getCTR().set(ctr);
-	            						run.setText(member.getText(),0);
-	            						paragraph.addRun(run);
-	            						paragraph.setNumID(xwpfParagraph.getNumID());
-	            						paragraph.setSpacingAfter(xwpfParagraph.getSpacingAfter());
-	            						paragraph.setSpacingBefore(xwpfParagraph.getSpacingBefore());
-	            						paragraph.setSpacingLineRule(xwpfParagraph.getSpacingLineRule());
-	            					}
-								}
-	            			}
-	            		}
-            			System.out.println(i +"." +j + " - " + xwpfRun.getText(0));
-            	}
-			}
-            File outFile = new File("D:\\BM02_" + Calendar.getInstance().getTimeInMillis() + ".docx");
-            os = new FileOutputStream(outFile);
-            document.write(os);
-            os.close();
-            resource = new InputStreamResource(new FileInputStream(outFile));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
-			if(document != null)
-				try {
-					document.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		}
-        String contentType = "application/octet-stream";
-        String headerValue = "attachment; filename=\"BM02.docx\"";
-         
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
-                .body(resource);   
+		File file = generate02(assessment, result);
+		String toEmail = "robintungyb@gmail.com, to_username_b@yahoo.com";
+		String subject = "Testing Gmail SSL";
+		String body = "Dear Mail Crawler,\" + \"\\n\\n Please do not spam my email!";
+		SendEmailSSL.send(toEmail, subject, body, file);
+		return ResponseEntity.ok().build();
 	}
 
-	@RequestMapping(value = "/{assessment_id}/export", method = RequestMethod.POST)
+	@RequestMapping(value = "/{assessment_id}/export03", method = RequestMethod.POST)
 	@PreAuthorize("permitAll")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Resource>  export(@PathVariable long assessment_id,@AuthenticationPrincipal AuthenticatedUser user) {
+	public ResponseEntity<Resource>  export03(@PathVariable long assessment_id,@AuthenticationPrincipal AuthenticatedUser user) {
 		Assessment assessment = assessmentService.find(assessment_id);
 		List<AssessmentResult> results  = assessmentService.findAllByAssessmentId(assessment_id);
 		XWPFDocument document = null;
@@ -355,5 +268,114 @@ public class AssessmentController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
                 .body(resource);   
 	}
+	@RequestMapping(value = "/{assessment_id}/export02", method = RequestMethod.POST)
+	@PreAuthorize("permitAll")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<Resource>  export02(@PathVariable long assessment_id,@AuthenticationPrincipal AuthenticatedUser user) {
+		Assessment assessment = assessmentService.find(assessment_id);
+		AssessmentResult result = assessmentService.findActiveResult(assessment_id, user.getId());
 
+        String contentType = "application/octet-stream";
+        String headerValue = "attachment; filename=\"BM02.docx\"";
+        File out = generate02(assessment, result);
+        Resource resource = null;
+		try {
+			resource = new InputStreamResource(new FileInputStream(out));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
+                .body(resource);  
+	}
+	private File generate02(Assessment assessment, AssessmentResult result) {
+		XWPFDocument document = null;
+		File file = null;
+		OutputStream os = null;
+		Resource resource = null;
+		Map<String,Object> map = Utils.getMap(result);
+		map.put("{ideaName}", assessment.getIdea().getText());
+		map.put("{username}", result.getV_2_1());
+		map.put("{level}", assessment.getLevel().getText());
+		map.put("{member}", assessment.getIdea().getMembers());
+		map.put("{day}", assessment.getSubmitedDate().get(Calendar.DAY_OF_MONTH) +"");
+		map.put("{month}", assessment.getSubmitedDate().get(Calendar.MONTH) +"");
+		map.put("{year}", assessment.getSubmitedDate().get(Calendar.YEAR) +"");
+		try {
+			file = ResourceUtils.getFile("classpath:static/word/BM02.docx");
+			document = new XWPFDocument(new FileInputStream(file));
+            List<XWPFParagraph> paragraphs = document.getParagraphs();
+    		CTOnOff on =CTOnOff.Factory.newInstance();
+    		on.setVal(STOnOff1.ON);
+    		CTOnOff off =CTOnOff.Factory.newInstance();
+    		off.setVal(STOnOff1.OFF);
+            for (int i = 0; i < paragraphs.size(); i++) {
+            	XWPFParagraph xwpfParagraph = paragraphs.get(i);
+	            	List<XWPFRun> runs = xwpfParagraph.getRuns();
+	            	
+	            	for (int j = 0; j < runs.size(); j++) {
+	            		XWPFRun xwpfRun = runs.get(j);
+	            		//check
+	            		if(xwpfRun.getCTR().getFldCharList().size() >0 && xwpfRun.getCTR().getFldCharList().get(0).getFfData() != null && xwpfRun.getCTR().getFldCharList().get(0).getFfData().getCheckBoxList().size() > 0 && xwpfRun.getCTR().getFldCharList().get(0).getFfData().getNameList().size() > 0) {
+            				String name = xwpfRun.getCTR().getFldCharList().get(0).getFfData().getNameList().get(0).getVal();
+	            			if(map.containsKey(name)) {
+		                		xwpfRun.getCTR().getFldCharList().get(0).getFfData().getCheckBoxList().get(0).setChecked(on);
+	            			}
+	            		}
+	            		//text
+	            		if(map.containsKey(xwpfRun.getText(0))) {
+	            			if(map.get(xwpfRun.getText(0).trim()) == null) {
+	            				xwpfRun.setText("",0);
+	            			}
+	            			if(map.get(xwpfRun.getText(0)) instanceof  String){
+	            				xwpfRun.setText(String.valueOf(map.get(xwpfRun.getText(0))),0);
+	            			}
+	            			if(map.get(xwpfRun.getText(0)) instanceof  List) {
+	            				boolean first = true;
+	            				for (Member member : (List<Member>)map.get(xwpfRun.getText(0))) {
+	            					if(first) {
+	            						xwpfRun.setText(member.getText(),0);
+	            						first = false;
+	            					}else {
+		    	            			XmlCursor cursor = xwpfParagraph.getCTP().newCursor();
+		    	            			cursor.toNextSibling();
+		    	            			XWPFParagraph paragraph =  document.insertNewParagraph(cursor);
+		            					XWPFRun run = paragraph.createRun();
+		            					CTR ctr = (CTR)xwpfRun.getCTR().copy();
+		            					run.getCTR().set(ctr);
+	            						run.setText(member.getText(),0);
+	            						paragraph.addRun(run);
+	            						paragraph.setNumID(xwpfParagraph.getNumID());
+	            						paragraph.setSpacingAfter(xwpfParagraph.getSpacingAfter());
+	            						paragraph.setSpacingBefore(xwpfParagraph.getSpacingBefore());
+	            						paragraph.setSpacingLineRule(xwpfParagraph.getSpacingLineRule());
+	            					}
+								}
+	            			}
+	            		}
+            			System.out.println(i +"." +j + " - " + xwpfRun.getText(0));
+            	}
+			}
+            File outFile = new File("D:\\BM02_" + Calendar.getInstance().getTimeInMillis() + ".docx");
+            os = new FileOutputStream(outFile);
+            document.write(os);
+            os.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(document != null)
+				try {
+					document.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return file;
+	}
 }

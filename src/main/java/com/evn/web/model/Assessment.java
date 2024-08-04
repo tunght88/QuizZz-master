@@ -59,6 +59,9 @@ public class Assessment  implements UserOwned {
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar createdDate;
 
+	@Column(name = "submited_date")
+	private Calendar submitedDate;
+
 	private Boolean isPublished = false;
 
 	
@@ -74,6 +77,16 @@ public class Assessment  implements UserOwned {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Calendar getSubmitedDate() {
+		if(submitedDate == null)
+			submitedDate = Calendar.getInstance();
+		return submitedDate;
+	}
+
+	public void setSubmitedDate(Calendar submitedDate) {
+		this.submitedDate = submitedDate;
 	}
 
 	public Boolean getActive() {

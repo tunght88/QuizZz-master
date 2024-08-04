@@ -51,12 +51,12 @@
 			if(assessId == undefined)
 				return;
 			var xhr = new XMLHttpRequest();
-			xhr.open('POST', "/api/assessments/" + assessId+ "/export", true);
+			xhr.open('POST', "/api/assessments/" + assessId+ "/export03", true);
 			xhr.responseType = 'blob';
 			xhr.setRequestHeader("Content-Type", "application/json");
 			xhr.onload = function (e) {
 			    var blob = e.currentTarget.response;
-			    saveAs(blob,"BM02.docx")
+			    saveAs(blob,"BM03.docx")
 			}
 			xhr.send(null);
 		}

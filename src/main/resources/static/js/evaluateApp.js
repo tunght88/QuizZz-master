@@ -150,12 +150,7 @@
 				$scope.result.v_4_7 = 0;
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', "/api/assessments/" + $scope.assessmentId + "/submit", true);
-			xhr.responseType = 'blob';
 			xhr.setRequestHeader("Content-Type", "application/json");
-			xhr.onload = function (e) {
-			    var blob = e.currentTarget.response;
-			    saveAs(blob,"BM02.docx")
-			}
 			xhr.send(JSON.stringify($scope.result));
 		}
 	

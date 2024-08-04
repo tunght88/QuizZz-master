@@ -22,6 +22,30 @@ public class Council extends BaseModel implements UserOwned {
 
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar createdDate;
+	
+
+	@Column(name = "start_date")
+	private Calendar startDate;
+
+	@Column(name = "end_date")
+	private Calendar endDate;
+	
+	
+	public Calendar getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Calendar startDate) {
+		this.startDate = startDate;
+	}
+
+	public Calendar getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Calendar endDate) {
+		this.endDate = endDate;
+	}
 
 	public Calendar getCreatedDate() {
 		return createdDate;

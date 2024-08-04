@@ -47,7 +47,20 @@
 					);
 			}
 		};
-	
+
+		$scope.exportDoc02 = function(assessId) {
+			if(assessId == undefined)
+				return;
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', "/api/assessments/" + assessId+ "/export02", true);
+			xhr.responseType = 'blob';
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.onload = function (e) {
+			    var blob = e.currentTarget.response;
+			    saveAs(blob,"BM02.docx")
+			}
+			xhr.send(null);
+		}
 		$scope.loadNextPage();
 		
 		

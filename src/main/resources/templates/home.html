@@ -24,6 +24,7 @@
 						<th th:text="#{label.home.maintable.headers.council}" width="20%">Council</th>
 						<th th:text="#{label.home.maintable.headers.idea}" width="40%">Idea</th>
 						<th th:text="#{label.home.maintable.headers.level}" width="30%">Level</th>
+						<th th:text="#{label.home.maintable.headers.export}">Export</th>
 						<th th:text="#{label.home.maintable.headers.assessment}">Assess!</th>
 					</tr>
 				</thead>
@@ -37,6 +38,11 @@
 						</td>
 						<td>
 							{{assessment.level}}
+						</td>
+						<td>
+							<button class="btn btn-primary btn-xs" type="button" ng-click="exportDoc02(assessment.id)">
+								<span class="glyphicon glyphicon-download-alt fa-xs" aria-hidden="true"></span>
+							</button>
 						</td>
 						<td>
 							<a href="/assessment/{{assessment.id}}" class="btn btn-xs btn-primary">
@@ -59,6 +65,8 @@
 	<script type="text/javascript" src="../js/homeApp.js"
 		        th:src="@{/js/homeApp.js}"></script>
 
+	<script type="text/javascript" src="../js/FileSaver.js"
+		        th:src="@{/js/FileSaver.js}"></script>
 		        
 </body>
 </html>
