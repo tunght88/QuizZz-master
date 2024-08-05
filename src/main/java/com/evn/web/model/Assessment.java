@@ -62,6 +62,10 @@ public class Assessment  implements UserOwned {
 	@Column(name = "submited_date")
 	private Calendar submitedDate;
 
+	@Column(name = "org1")
+	private String org1;
+	@Column(name = "org2")
+	private String org2;
 	private Boolean isPublished = false;
 
 	
@@ -77,6 +81,22 @@ public class Assessment  implements UserOwned {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getOrg1() {
+		return org1;
+	}
+
+	public void setOrg1(String org1) {
+		this.org1 = org1;
+	}
+
+	public String getOrg2() {
+		return org2;
+	}
+
+	public void setOrg2(String org2) {
+		this.org2 = org2;
 	}
 
 	public Calendar getSubmitedDate() {

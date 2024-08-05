@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +19,9 @@ import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlCursor;
 import org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff1;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTOnOff;
@@ -178,6 +183,14 @@ public class AssessmentController {
 				s_4_6 +=result.getV_4_6();
 			}
 		}
+		float failRate = countFail*100/total;
+		float upperRate = countUpper*100/total;
+		String result = failRate <= 33 ? "Công nhận" : "Không công nhận";
+		String upperResult = upperRate >= 75 ? "e) Đề xuất đăng ký công nhận cấp cao hơn" : "";
+		map.put("{result}", result);
+		map.put("{upperResult}", upperResult);
+		map.put("{org1}", assessment.getOrg1());
+		map.put("{org2}", assessment.getOrg2());
 		map.put("{total}", total);
 		map.put("{fail}", countFail);
 		map.put("{success}", countSuccess);
@@ -188,29 +201,62 @@ public class AssessmentController {
 		map.put("{ideaName}", assessment.getIdea().getText());
 		map.put("{level}", assessment.getLevel().getText());
 		map.put("{member}", assessment.getIdea().getMembers());
-		map.put("{day}", Calendar.getInstance().get(Calendar.DAY_OF_MONTH) +"");
-		map.put("{month}", Calendar.getInstance().get(Calendar.MONTH) +"");
-		map.put("{year}", Calendar.getInstance().get(Calendar.YEAR) +"");
+		map.put("{president}", assessment.getCouncil().getPresident());
+		map.put("{secretary}", assessment.getCouncil().getSecretary());
+		map.put("{councilUnit}", assessment.getCouncil().getUnit());
+		map.put("{councilName}", assessment.getCouncil().getText());
+		map.put("{decisionNumber}", assessment.getCouncil().getDecisionNumber());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+		map.put("{meetingStart}", sdf.format(assessment.getCouncil().getStartDate().getTime()));
+		map.put("{meetingEnd}", sdf.format(assessment.getCouncil().getEndDate().getTime()));
+		map.put("{meetingLoc}", assessment.getCouncil().getMeetingLoc());
+		map.put("{meetingType}", assessment.getCouncil().getMeetingType());
+		map.put("{day}", assessment.getCouncil().getFoundingDate().get(Calendar.DAY_OF_MONTH) +"");
+		map.put("{month}", assessment.getCouncil().getFoundingDate().get(Calendar.MONTH) +"");
+		map.put("{year}", assessment.getCouncil().getFoundingDate().get(Calendar.YEAR) +"");
+		map.put("{day1}", assessment.getCouncil().getStartDate().get(Calendar.DAY_OF_MONTH) +"");
+		map.put("{month1}", assessment.getCouncil().getStartDate().get(Calendar.MONTH) +"");
+		map.put("{year1}", assessment.getCouncil().getStartDate().get(Calendar.YEAR) +"");
 		try {
 			file = ResourceUtils.getFile("classpath:static/word/BM03.docx");
 			document = new XWPFDocument(new FileInputStream(file));
             List<XWPFParagraph> paragraphs = document.getParagraphs();
-            for (int i = 0; i < paragraphs.size(); i++) {
-            	XWPFParagraph xwpfParagraph = paragraphs.get(i);
+            List<XWPFTable> tables = document.getTables();
+            List<XWPFParagraph> all = new ArrayList<>();
+            for (int i = 0; i < tables.size(); i++) {
+
+            	XWPFTable table = tables.get(i);
+                List<XWPFTableRow> rows = table.getRows();
+                for (int j = 0; j < rows.size(); j++) {
+                	XWPFTableRow row = rows.get(j);
+                    List<XWPFTableCell> cells = row.getTableCells();
+
+                    for (int k = 0; k < cells.size(); k++) {
+                    	XWPFTableCell cell = cells.get(k);
+                    	all.addAll(cell.getParagraphs());
+                    }
+                	
+                }
+            }
+            all.addAll(paragraphs);
+            for (int i = 0; i < all.size(); i++) {
+            	XWPFParagraph xwpfParagraph = all.get(i);
 	            	List<XWPFRun> runs = xwpfParagraph.getRuns();
 	            	
 	            	for (int j = 0; j < runs.size(); j++) {
 	            		XWPFRun xwpfRun = runs.get(j);
 	            		//text
-	            		if(map.containsKey(xwpfRun.getText(0))) {
-	            			if(map.get(xwpfRun.getText(0).trim()) == null) {
+	            		String text= xwpfRun.getText(0) == null ? "" : xwpfRun.getText(0).trim();
+	            		if(map.containsKey(text)) {
+	            			if(map.get(text) == null || map.get(text).equals("")) {
 	            				xwpfRun.setText("",0);
 	            			}
-	            			if(map.get(xwpfRun.getText(0)) instanceof  String){
-	            				xwpfRun.setText(String.valueOf(map.get(xwpfRun.getText(0))),0);
+	            			if(map.get(text) instanceof  String){
+	            				xwpfRun.setText(String.valueOf(map.get(text)),0);
 	            			}
-	            			if(map.get(xwpfRun.getText(0)) instanceof  Integer){
-	            				xwpfRun.setText(String.valueOf(map.get(xwpfRun.getText(0))),0);
+	            			if(map.get(text) instanceof  Integer){
+	            				xwpfRun.setText(String.valueOf(map.get(text)),0);
 	            			}
 	            			if(map.get(xwpfRun.getText(0)) instanceof  List) {
 	            				boolean first = true;
@@ -295,6 +341,8 @@ public class AssessmentController {
 		OutputStream os = null;
 		Resource resource = null;
 		Map<String,Object> map = Utils.getMap(result);
+		map.put("{org1}", assessment.getOrg1());
+		map.put("{org2}", assessment.getOrg2());
 		map.put("{ideaName}", assessment.getIdea().getText());
 		map.put("{username}", result.getV_2_1());
 		map.put("{level}", assessment.getLevel().getText());
@@ -302,6 +350,9 @@ public class AssessmentController {
 		map.put("{day}", assessment.getSubmitedDate().get(Calendar.DAY_OF_MONTH) +"");
 		map.put("{month}", assessment.getSubmitedDate().get(Calendar.MONTH) +"");
 		map.put("{year}", assessment.getSubmitedDate().get(Calendar.YEAR) +"");
+		map.put("{day1}", assessment.getCouncil().getStartDate().get(Calendar.DAY_OF_MONTH) +"");
+		map.put("{month1}", assessment.getCouncil().getStartDate().get(Calendar.MONTH) +"");
+		map.put("{year1}", assessment.getCouncil().getStartDate().get(Calendar.YEAR) +"");
 		try {
 			file = ResourceUtils.getFile("classpath:static/word/BM02.docx");
 			document = new XWPFDocument(new FileInputStream(file));
@@ -310,10 +361,27 @@ public class AssessmentController {
     		on.setVal(STOnOff1.ON);
     		CTOnOff off =CTOnOff.Factory.newInstance();
     		off.setVal(STOnOff1.OFF);
-            for (int i = 0; i < paragraphs.size(); i++) {
-            	XWPFParagraph xwpfParagraph = paragraphs.get(i);
+            List<XWPFTable> tables = document.getTables();
+            List<XWPFParagraph> all = new ArrayList<>();
+            for (int i = 0; i < tables.size(); i++) {
+
+            	XWPFTable table = tables.get(i);
+                List<XWPFTableRow> rows = table.getRows();
+                for (int j = 0; j < rows.size(); j++) {
+                	XWPFTableRow row = rows.get(j);
+                    List<XWPFTableCell> cells = row.getTableCells();
+
+                    for (int k = 0; k < cells.size(); k++) {
+                    	XWPFTableCell cell = cells.get(k);
+                    	all.addAll(cell.getParagraphs());
+                    }
+                	
+                }
+            }
+            all.addAll(paragraphs);
+            for (int i = 0; i < all.size(); i++) {
+            	XWPFParagraph xwpfParagraph = all.get(i);
 	            	List<XWPFRun> runs = xwpfParagraph.getRuns();
-	            	
 	            	for (int j = 0; j < runs.size(); j++) {
 	            		XWPFRun xwpfRun = runs.get(j);
 	            		//check
@@ -324,16 +392,17 @@ public class AssessmentController {
 	            			}
 	            		}
 	            		//text
-	            		if(map.containsKey(xwpfRun.getText(0))) {
-	            			if(map.get(xwpfRun.getText(0).trim()) == null) {
+	            		String text= xwpfRun.getText(0) == null ? "" : xwpfRun.getText(0).trim();
+	            		if(map.containsKey(text)) {
+	            			if(map.get(text) == null || map.get(text).equals("")) {
 	            				xwpfRun.setText("",0);
 	            			}
-	            			if(map.get(xwpfRun.getText(0)) instanceof  String){
-	            				xwpfRun.setText(String.valueOf(map.get(xwpfRun.getText(0))),0);
+	            			if(map.get(text) instanceof  String){
+	            				xwpfRun.setText(String.valueOf(map.get(text)),0);
 	            			}
-	            			if(map.get(xwpfRun.getText(0)) instanceof  List) {
+	            			if(map.get(text) instanceof  List) {
 	            				boolean first = true;
-	            				for (Member member : (List<Member>)map.get(xwpfRun.getText(0))) {
+	            				for (Member member : (List<Member>)map.get(text)) {
 	            					if(first) {
 	            						xwpfRun.setText(member.getText(),0);
 	            						first = false;
@@ -361,6 +430,7 @@ public class AssessmentController {
             os = new FileOutputStream(outFile);
             document.write(os);
             os.close();
+            return outFile;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
