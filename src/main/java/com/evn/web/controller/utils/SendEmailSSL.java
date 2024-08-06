@@ -44,11 +44,13 @@ public class SendEmailSSL {
 			message.setSubject(subject);
 			BodyPart messageBodyPart = new MimeBodyPart(); 
 			messageBodyPart.setText(body);
-			MimeBodyPart attachmentPart = new MimeBodyPart();
-			attachmentPart.attachFile(attacthemnt);
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(messageBodyPart);
-			multipart.addBodyPart(attachmentPart);
+			if(attacthemnt != null) {
+				MimeBodyPart attachmentPart = new MimeBodyPart();
+				attachmentPart.attachFile(attacthemnt);
+				multipart.addBodyPart(attachmentPart);
+			}
 			message.setContent(multipart);
 			Transport.send(message);
 

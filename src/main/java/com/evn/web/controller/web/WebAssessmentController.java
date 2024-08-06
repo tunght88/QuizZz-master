@@ -3,6 +3,7 @@ package com.evn.web.controller.web;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,8 @@ import com.evn.web.service.AssessmentService;
 
 @Controller
 public class WebAssessmentController {
-
+	@Autowired
+	private MessageSource messageSource;
 	@Autowired
 	AssessmentService assessmentService;
 
@@ -27,7 +29,9 @@ public class WebAssessmentController {
 	public ModelAndView home(HttpSession session, @AuthenticationPrincipal AuthenticatedUser user) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("home");
-		session.setAttribute("user", user);
+		mav.addObject("user", user.getUser());
+		mav.addObject("welcomeMessage", messageSource.getMessage("label.home.welcome", null, null) + " " + user.getUser().getFullName());
+		session.setAttribute("user", user.getUser());
 		return mav;
 	}
 

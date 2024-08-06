@@ -6,6 +6,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.evn.web.controller.utils.SendEmailSSL;
 import com.evn.web.model.TokenModel;
 import com.evn.web.model.TokenType;
 import com.evn.web.model.User;
@@ -43,14 +44,6 @@ public class TokenDeliverySystemEmail implements TokenDeliverySystem {
 		String subject = messageSource.getMessage(base_config + ".subject", null, null);
 		String body = String.format(messageSource.getMessage(base_config + ".body", null, null), user.getUsername(),
 				url);
-
-		SimpleMailMessage mailMessage = new SimpleMailMessage();
-
-		mailMessage.setTo(user.getEmail());
-		mailMessage.setFrom("noreply@web.com");
-		mailMessage.setSubject(subject);
-		mailMessage.setText(body);
-
-		mailSender.send(mailMessage);
+		SendEmailSSL.send(user.getEmail(), subject, body, null);
 	}
 }
