@@ -35,7 +35,7 @@ public class Assessment  implements UserOwned {
 	@JsonIgnore
 	private User createdBy;
 
-	@Size(min = 2, max = 100, message = "The name must be between 2 and 100 messages.")
+	@Size(min = 2, max = 500, message = "The name must be between 2 and 500 messages.")
 	@NotNull(message = "Please provide a name")
 	private String name;
 

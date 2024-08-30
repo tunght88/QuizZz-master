@@ -1,3 +1,29 @@
+class Stack {
+  constructor() {
+    this.stack = [];
+  }
+
+  push(item) {
+    return this.stack.push(item);
+  }
+
+  pop() {
+    return this.stack.pop();
+  }
+
+  peek() {
+    return this.stack[this.length - 1];
+  }
+
+  get length() {
+    return this.stack.length;
+  }
+
+  isEmpty() {
+    return this.length === 0;
+  }
+}
+
 (function() {
 
 	var app = angular.module("evaluateApp", []);
@@ -12,7 +38,7 @@
 		$scope.step = 1;
 	    $scope.date = new Date();
 		$scope.validateSuccess = true;
-		$scope.lastStep = 1;
+		$scope.lastStep = new Stack();
 		$scope.initialize = function() {
 			if ($scope.assessmentId == 0)
 				return;
@@ -40,12 +66,14 @@
 		
 		}
 		$scope.back = function() {
-			$scope.step = $scope.lastStep;
+			var last = $scope.lastStep.pop();
+			if(last!= undefined)
+			$scope.step = last;
 		}
 		$scope.validateCheckbox = function(field){
 			var model = $parse('msg_' + field);
 			if($scope.$eval('result.' + field) == undefined){
-				model.assign($scope, 'Please choose at least one option');
+				model.assign($scope, 'Vui lòng chọn một lựa chọn');
 				$scope.validateSuccess = false;
 			}else
 				model.assign($scope, '');
@@ -53,7 +81,7 @@
 		$scope.validateText = function(field){
 			var model = $parse('msg_' + field);
 			if($scope.$eval('result.' + field) == undefined){
-				model.assign($scope, 'Please input value');
+				model.assign($scope, 'Vui lòng nhập thông tin');
 				$scope.validateSuccess = false;
 			}else
 				model.assign($scope, '');
@@ -62,10 +90,10 @@
 			var model = $parse('msg_' + field);
 			var val = $scope.$eval('result.' + field);
 			if(val == undefined){
-				model.assign($scope, 'Please input value');
+				model.assign($scope, 'Vui lòng nhập thông tin');
 				$scope.validateSuccess = false;
 			}else if(Number(val) > max || Number(val) < min){
-				model.assign($scope, 'Please input value between '+ min + ' and '+ max +'');
+				model.assign($scope, 'Vui lòng nhập giá trị giữa '+ min + ' và '+ max +'');
 				$scope.validateSuccess = false;
 			}else
 				model.assign($scope, '');
@@ -104,7 +132,8 @@
 					break;
 				case 4 : 
 					$scope.validateCheckbox('v_3_3');
-					$scope.validateCheckbox('v_3_4');
+					if($scope.result.v_3_3 != 0)
+						$scope.validateCheckbox('v_3_4');
 					if(!$scope.validateSuccess)
 						return;
 					break;
@@ -123,17 +152,21 @@
 						return;
 					break;
 				case 7 : 
-					if($scope.result.v_4_4 == 0)
-						$scope.validateRate('v_4_5_2', 0,3);
-					else
-						$scope.validateRate('v_4_5_1',0,100);
+					if($scope.result.v_4_4 == 0){
+						$scope.validateRate('v_4_5_2', 1,3);
+						$scope.result.v_4_5_1 = null;
+					}
+					else{
+						$scope.validateRate('v_4_5_1',7,10);
+						$scope.result.v_4_5_2 = null;
+					}
 					$scope.validateRate('v_4_6',20,30);
 					if(!$scope.validateSuccess)
 						return;
 					break;
 				default: return;
 			}
-			$scope.lastStep = $scope.step;
+			$scope.lastStep.push($scope.step);
 			
 			if(nextStep ==undefined && $scope.step < 8)
 				$scope.step++;
@@ -144,7 +177,7 @@
 		}
 
 		$scope.submitAnswers = function() {
-			if($scope.result.v_4_7 == 'true')
+			if($scope.result.v_4_7)
 				$scope.result.v_4_7 = 1;
 			else
 				$scope.result.v_4_7 = 0;

@@ -51,6 +51,7 @@ public class WebAssessmentController {
 		Assessment assessment = assessmentService.find(assessment_id);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("assessment", assessment);
+		mav.addObject("members", assessment.getIdea().getMembers());
 		AssessmentResult result = new AssessmentResult();
 		if(user != null) {
 			mav.addObject("user", user.getUser());

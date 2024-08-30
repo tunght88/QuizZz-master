@@ -16,17 +16,22 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+
 public class SendEmailSSL {
 
-	final static String username = "tung.hoangthanh088@gmail.com";
-	final static String password = "mbvp weds ajgv imye";
-
+	final static String username = "hdkhcn.slhpc@gmail.com";
+	final static String password = "qpvq ubxc zhaz manc";
+	@Autowired
+	private static Environment env;
 	public static void send(String toEmail,String subject, String body, File attacthemnt) {
 		Properties prop = new Properties();
 		prop.put("mail.smtp.host", "smtp.gmail.com");
 		prop.put("mail.smtp.port", "465");
 		prop.put("mail.smtp.auth", "true");
 		prop.put("mail.smtp.socketFactory.port", "465");
+		prop.put("mail.mime.charset", "UTF-8");
 		prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 
 		Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
@@ -37,13 +42,14 @@ public class SendEmailSSL {
 
 		try {
 
-			Message message = new MimeMessage(session);
+			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(toEmail));
-			message.setSubject(subject);
+			message.setSubject(subject, "utf-8");
+			message.setHeader("Content-Type", "text/plain; charset=UTF-8");
 			BodyPart messageBodyPart = new MimeBodyPart(); 
-			messageBodyPart.setText(body);
+			messageBodyPart.setContent(body, "text/plain; charset=UTF-8");
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(messageBodyPart);
 			if(attacthemnt != null) {
@@ -51,7 +57,7 @@ public class SendEmailSSL {
 				attachmentPart.attachFile(attacthemnt);
 				multipart.addBodyPart(attachmentPart);
 			}
-			message.setContent(multipart);
+			message.setContent(multipart, "text/plain");
 			Transport.send(message);
 
 			System.out.println("Done");

@@ -23,18 +23,18 @@
 						</div>
 						<h4 class="" style="font-weight: bold;">Tác giả / đồng tác giả giải pháp:</h4>
 						
-			        	<div ng-repeat="member in assessment.idea.members"> 
-							<li class="">{{member.text}}</li>
+			        	<div ng-repeat="member in result.assessment.idea.members"> 
+								<li class="">{{member.text}}</li>
 						</div>
 						
 						<h2 class="" style="font-weight: bold;">2. Người đánh giá:</h2>
 						<div style="display: flex; justify-content: flex-start;">
 							<h4 class=""><b>2.1 Họ và tên: &nbsp;</b></h4>
-							<h4 th:if="${user!=null}" th:text="${user.username}" class=""></h4>
+							<h4 th:if="${user!=null}" th:text="${user.fullName}" class=""></h4>
 							<input th:if="${user==null}" name="v_2_1" class="form-control" required="true" style="width: 80%"  ng-model="result.v_2_1"/>
 						</div>
 						<h2 class="" style="font-weight: bold;">2.2  Thời điểm nhận Đơn và Hồ sơ sáng kiến để đánh giá</h2>
-						<h3 class="">{{date | date:'dd/MM/yyyy'}}</h3>
+						<h3 class="">{{result.assessment.submitedDate | date:'dd/MM/yyyy'}}</h3>
 						
 <!-- 						<div class="form-group"> -->
 <!-- 							<label th:text="#{label.1}">Title</label> -->
@@ -107,6 +107,8 @@
 		        		<div class="radio">
 		        			<input type="radio" ng-model="result.v_3_3" ng-value="0" name="v_3_3">Không đủ dài để đánh giá hiệu quả</input>
 		        		</div>
+		        		
+						<h4 class="" style="font-style: italic;">1. (Nếu quá trình áp dụng giải pháp lng đủ dài để đánh giá hiệu quả thì không tiếp tục đánh giá mục 3.4 bên dưới và chuyển sang mục 4. Kết luận).</h4> 
 						<span style="color:Red">{{msg_v_3_3}}</span>
 						<h4 class="" style="font-weight: bold;">3.4. Hiệu quả thực tế thu được khi áp dụng giải pháp (mục A.4 trong Đơn)</h4> 
 						<div class="radio">
@@ -161,7 +163,7 @@
 					
 					</div>
 					<div ng-show="step==7">
-						<h3 class="" style="font-weight: bold;">4.5. Đề xuất mức thù lao chung cho tác giả / đồng tác giả trong 03 năm (tổng mức thù lao tối đa nhỏ hơn 3 lần mức lương cơ sở, theo Điều 16 Quy chế quản lý hoạt động KHCN trong tập đoàn Điện lực Quốc gia Việt Nam).   </h3> 
+						<h3 class="" style="font-weight: bold;">4.5. Đề xuất mức thù lao chung cho tác giả/đồng tác giả trong 01 năm (mức tối thiểu là 7% tối đa là 10% nếu tính được hoặc tối thiểu là 01 mức lương cơ sở tối đa là 03 mức lương cơ sở nếu không tính được)    </h3> 
 				        <div ng-hide="result.v_4_4==0" style="display: flex; justify-content: flex-start;">
 							<h4 class="" style="font-style: italic;">Tỷ lệ: &nbsp;</h4>
 					        <input  name="v_4_5_1" class="form-control" required="true"   ng-model="result.v_4_5_1" style="width: 80%"/>
@@ -172,12 +174,12 @@
 					        <input  name="v_4_5_2" class="form-control" required="true"   ng-model="result.v_4_5_2" style="width: 80%"/>
 				        </div>
 						<span style="color:Red">{{msg_v_4_5_2}}</span>
-						<h3 class="" style="font-weight: bold;">4.6. Đề xuất mức thù lao chung cho những người tham gia tổ chức áp dụng sáng kiến lần đầu trong 03 năm   (mức tối đa 30% thù lao tác giả nêu tại mục 4.5, theo điều 40 Quy chế quản lý hoạt động KHCN trong tập đoàn Điện lực Quốc gia Việt Nam; tối thiểu 20% theo Điều 10 Điều lệ sáng kiến)</h3> 
+						<h3 class="" style="font-weight: bold;">4.6. Đề xuất mức thù lao chung cho những người tham gia tổ chức áp dụng sáng kiến lần đầu trong 01 năm (mức tối thiểu 20% tối đa là 30% thù lao tác giả nêu tại mục 4.5)</h3> 
 				        <input  name="v_4_6" class="form-control" required="true" type="text"   ng-model="result.v_4_6" min="20" max="30" ng-keypress="isNumberKey($event)"/>
 						<span style="color:Red">{{msg_v_4_6}}</span>
 						
 		        		<div class="checkbox">
-		        			<input type="checkbox" ng-model="result.v_4_7" ng-value="1" name="v_4_7"><b>4.7. Đề xuất đăng ký công nhận sáng kiến cấp cao hơn (đối với cấp cơ sở tại Đơn vị và cấp Tổng công ty)</b></input>
+		        			<input type="checkbox" ng-model="result.v_4_7" ng-checked="result.v_4_7==1" ng-value="1" class="form-control" style="width: 5%" name="v_4_7"><b style="font-size: 24px">4.7. Đề xuất đăng ký công nhận sáng kiến cấp cao hơn (đối với cấp cơ sở tại Đơn vị và cấp Tổng công ty)</b></input>
 		        		</div>
     					<h3 class="" style="font-weight: bold;">4.8. Ý kiến khác</h3> 
 				        <input  name="v_4_8" class="form-control" required="true"   ng-model="result.v_4_8"/>

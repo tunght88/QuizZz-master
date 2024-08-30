@@ -20,8 +20,19 @@ public class Level extends BaseModel implements UserOwned {
 	private String text;
 
 
+	private String name;
+	
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar createdDate;
+
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public Calendar getCreatedDate() {
 		return createdDate;

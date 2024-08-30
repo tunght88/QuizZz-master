@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "idea")
 public class Idea extends BaseModel implements UserOwned {
 
-	@Size(min = 1, max = 200, message = "The answer should be less than 200 characters")
+	@Size(min = 1, max = 500, message = "The answer should be less than 500 characters")
 	@NotNull(message = "No answer text provided.")
 	private String text;
 

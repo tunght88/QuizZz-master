@@ -16,9 +16,9 @@ public class Utils {
 			    if(field.getType().equals(Integer.class))
 			    	map.put(field.getName() + "_" + field.get(object), field.get(object));
 			    else {
-			    	if("v_4_5_1".equals(field.getName()) && field.get(object) != null) {
-				    	map.put("{" +field.getName() +"}" , field.get(object) + " lần lương cơ sở");
-			    	}else if("v_4_5_2".equals(field.getName()) && field.get(object) != null) {
+			    	if("v_4_5_2".equals(field.getName()) && field.get(object) != null) {
+				    	map.put("{" +field.getName() +"}" , field.get(object) + " lần mức lương cơ sở");
+			    	}else if("v_4_5_1".equals(field.getName()) && field.get(object) != null) {
 				    	map.put("{" +field.getName() +"}" , field.get(object) + " %");
 			    	}else if("v_4_6".equals(field.getName()) && field.get(object) != null) {
 				    	map.put("{" +field.getName() +"}" , field.get(object) + " %");

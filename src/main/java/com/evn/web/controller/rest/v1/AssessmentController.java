@@ -30,6 +30,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -111,8 +112,13 @@ public class AssessmentController {
 	@PreAuthorize("permitAll")
 	@ResponseStatus(HttpStatus.OK)
 	public AssessmentResult findAssessmentResult(@PathVariable Long assessment_id,@AuthenticationPrincipal AuthenticatedUser user) {
-
-		return assessmentService.findActiveResult(assessment_id, user.getId());
+		AssessmentResult result = assessmentService.findActiveResult(assessment_id, user.getId());
+		if(result == null) {
+			result = new AssessmentResult();
+			Assessment assessment = assessmentService.find(assessment_id);
+			result.setAssessment(assessment);
+		}
+		return result;
 	}
 
 	@RequestMapping(value = "/{assessment_id}/submit", method = RequestMethod.POST)
@@ -134,9 +140,9 @@ public class AssessmentController {
 		else
 			result = assessmentService.save(result);
 		File file = generate02(assessment, result);
-		String toEmail = "robintungyb@gmail.com, to_username_b@yahoo.com";
-		String subject = "Testing Gmail SSL";
-		String body = "Dear Mail Crawler,\" + \"\\n\\n Please do not spam my email!";
+		String toEmail = user.getUser().getEmail() +", ninhvuong3010@gmail.com ";
+		String subject = result.getAssessment().getCouncil().getText() + " - " + result.getAssessment().getIdea().getText() ;//"Đánh giá sáng kiến";
+		String body = "File kết quả đánh giá được đính kèm theo mail";
 		SendEmailSSL.send(toEmail, subject, body, file);
 		return ResponseEntity.ok().build();
 	}
@@ -213,14 +219,14 @@ public class AssessmentController {
 		map.put("{meetingLoc}", assessment.getCouncil().getMeetingLoc());
 		map.put("{meetingType}", assessment.getCouncil().getMeetingType());
 		map.put("{day}", assessment.getCouncil().getFoundingDate().get(Calendar.DAY_OF_MONTH) +"");
-		map.put("{month}", assessment.getCouncil().getFoundingDate().get(Calendar.MONTH) +"");
+		map.put("{month}", (assessment.getCouncil().getFoundingDate().get(Calendar.MONTH) +1) +"");
 		map.put("{year}", assessment.getCouncil().getFoundingDate().get(Calendar.YEAR) +"");
 		map.put("{day1}", assessment.getCouncil().getStartDate().get(Calendar.DAY_OF_MONTH) +"");
-		map.put("{month1}", assessment.getCouncil().getStartDate().get(Calendar.MONTH) +"");
+		map.put("{month1}", (assessment.getCouncil().getStartDate().get(Calendar.MONTH) +1) +"");
 		map.put("{year1}", assessment.getCouncil().getStartDate().get(Calendar.YEAR) +"");
 		try {
-			file = ResourceUtils.getFile("classpath:static/word/BM03.docx");
-			document = new XWPFDocument(new FileInputStream(file));
+			ClassPathResource re = new ClassPathResource("/static/word/BM03.docx");
+			document = new XWPFDocument(re.getInputStream());
             List<XWPFParagraph> paragraphs = document.getParagraphs();
             List<XWPFTable> tables = document.getTables();
             List<XWPFParagraph> all = new ArrayList<>();
@@ -346,16 +352,17 @@ public class AssessmentController {
 		map.put("{ideaName}", assessment.getIdea().getText());
 		map.put("{username}", result.getV_2_1());
 		map.put("{level}", assessment.getLevel().getText());
+		map.put("{loc}", assessment.getLevel().getName());
 		map.put("{member}", assessment.getIdea().getMembers());
 		map.put("{day}", assessment.getSubmitedDate().get(Calendar.DAY_OF_MONTH) +"");
-		map.put("{month}", assessment.getSubmitedDate().get(Calendar.MONTH) +"");
+		map.put("{month}", (assessment.getSubmitedDate().get(Calendar.MONTH) +1) +"");
 		map.put("{year}", assessment.getSubmitedDate().get(Calendar.YEAR) +"");
 		map.put("{day1}", assessment.getCouncil().getStartDate().get(Calendar.DAY_OF_MONTH) +"");
-		map.put("{month1}", assessment.getCouncil().getStartDate().get(Calendar.MONTH) +"");
+		map.put("{month1}", (assessment.getCouncil().getStartDate().get(Calendar.MONTH) +1) +"");
 		map.put("{year1}", assessment.getCouncil().getStartDate().get(Calendar.YEAR) +"");
 		try {
-			file = ResourceUtils.getFile("classpath:static/word/BM02.docx");
-			document = new XWPFDocument(new FileInputStream(file));
+			ClassPathResource re = new ClassPathResource("/static/word/BM02.docx");
+			document = new XWPFDocument(re.getInputStream());
             List<XWPFParagraph> paragraphs = document.getParagraphs();
     		CTOnOff on =CTOnOff.Factory.newInstance();
     		on.setVal(STOnOff1.ON);

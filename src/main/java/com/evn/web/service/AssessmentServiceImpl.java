@@ -91,7 +91,7 @@ public class AssessmentServiceImpl implements AssessmentService {
 	@Override
 	public AssessmentResult save(AssessmentResult assessmentResult, User user) {
 		assessmentResult.setUser(user);
-		assessmentResult.setV_2_1(user.getUsername());
+		assessmentResult.setV_2_1(user.getFullName());
 		return assessmentResultRepository.save(assessmentResult);
 	}
 
@@ -109,11 +109,12 @@ public class AssessmentServiceImpl implements AssessmentService {
 		String whereClause = "from assessment t1, assessment_user t2, idea t3, level t4, council t5 where t1.id = t2.assessment_id and t1.idea_id = t3.id and t1.level_id = t4.id and t1.council_id = t5.id and t2.user_id = ? and t1.active = 1";
 		String countSql = "select count(*) " + whereClause;
 		int total = jdbcTemplate.queryForObject(countSql, new Object[] {user.getId()}, Integer.class);
-		String pageSql = "select t1.*, t3.text, t4.text, t5.text " + whereClause +  " LIMIT " + pageable.getPageSize() + " OFFSET " + pageable.getOffset();
+		String pageSql = "select t1.*, t3.text, t4.text, t5.text, (select COUNT(*) from assessment_result ar where AR.assessment_id = t1.id  AND ar.user_id  = t2.user_id) count_result " + whereClause +  " LIMIT " + pageable.getPageSize() + " OFFSET " + pageable.getOffset();
 		List<AssessmentView> lst = jdbcTemplate.query(pageSql, new Object[] {user.getId()}, (rs, rowNum) -> AssessmentView.builder()
 												.id(rs.getLong("id"))
 												.name(rs.getString("t1.name"))
 												.ideaName(rs.getString("t3.text"))
+												.countResult(rs.getInt("count_result"))
 												.level(rs.getString("t4.text"))
 												.councilName(rs.getString("t5.text"))
 												.description(rs.getString("description")).build());

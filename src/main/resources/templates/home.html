@@ -31,7 +31,7 @@
 				<tbody>				
 					<tr ng-repeat="assessment in assessments"  my-repeat-directive="">
 						<td>
-							{{assessment.name}}
+							{{assessment.councilName}}
 						</td>
 						<td>
 							{{assessment.ideaName}}
@@ -40,7 +40,7 @@
 							{{assessment.level}}
 						</td>
 						<td>
-							<button class="btn btn-primary btn-xs" type="button" ng-click="exportDoc02(assessment.id)">
+							<button ng-hide="assessment.countResult==0" class="btn btn-primary btn-xs" type="button" ng-click="exportDoc02(assessment.id)">
 								<span class="glyphicon glyphicon-download-alt fa-xs" aria-hidden="true"></span>
 							</button>
 						</td>

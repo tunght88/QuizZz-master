@@ -17,7 +17,6 @@ public class AssessmentResult extends BaseModel implements UserOwned {
 	private String text;
 
 	@ManyToOne
-	@JsonIgnore
 	private Assessment assessment;
 	@ManyToOne
 	@JsonIgnore
